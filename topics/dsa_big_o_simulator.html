@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DSA Simulator 01 — Big O Notation</title>
+<style>
+  :root { --bg:#f4f7fb; --card:#fff; --ink:#172033; --muted:#64748b; --line:#dbe3ef; --blue:#2563eb; --green:#059669; --orange:#ea580c; --purple:#7c3aed; }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif; background:var(--bg); color:var(--ink); line-height:1.55; }
+  header { background:linear-gradient(120deg,#14213d,#2457a7); color:white; padding:28px 18px; }
+  header .wrap, main { max-width:1100px; margin:auto; }
+  .eyebrow { text-transform:uppercase; letter-spacing:.12em; font-size:.78rem; opacity:.8; font-weight:700; }
+  h1 { margin:5px 0 8px; font-size:clamp(1.7rem,4vw,2.5rem); }
+  header p { margin:0; max-width:760px; color:#e4edff; }
+  main { padding:22px 16px 42px; }
+  .grid { display:grid; grid-template-columns:1.05fr .95fr; gap:18px; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:16px; padding:20px; box-shadow:0 5px 20px #0f172a0a; }
+  h2 { font-size:1.2rem; margin:0 0 10px; }
+  h3 { font-size:1rem; margin:18px 0 7px; }
+  .muted { color:var(--muted); }
+  .formula { display:inline-block; background:#eaf1ff; color:#1d4ed8; padding:7px 12px; border-radius:9px; font-weight:800; font-size:1.1rem; }
+  .controls { display:grid; grid-template-columns:1fr auto; gap:12px; align-items:center; margin:16px 0; }
+  input[type=range] { width:100%; accent-color:var(--blue); }
+  .nvalue { font-weight:800; font-size:1.1rem; min-width:70px; text-align:right; }
+  .buttons { display:flex; gap:8px; flex-wrap:wrap; margin:10px 0 14px; }
+  button { border:1px solid #cbd5e1; background:#fff; color:#172033; border-radius:9px; padding:9px 13px; cursor:pointer; font-weight:650; }
+  button:hover { background:#eff6ff; border-color:#93c5fd; }
+  button.primary { background:var(--blue); color:white; border-color:var(--blue); }
+  .chart-wrap { width:100%; overflow:hidden; }
+  svg { display:block; width:100%; height:auto; background:#fbfdff; border:1px solid var(--line); border-radius:12px; }
+  .legend { display:flex; gap:12px; flex-wrap:wrap; font-size:.86rem; margin-top:10px; }
+  .legend span { display:flex; gap:6px; align-items:center; }
+  .dot { width:10px; height:10px; border-radius:50%; display:inline-block; }
+  .callout { background:#f0fdf4; border:1px solid #bbf7d0; border-radius:12px; padding:13px 14px; margin-top:14px; }
+  .warning { background:#fff7ed; border-color:#fed7aa; }
+  .steps { padding-left:20px; margin-bottom:0; }
+  .steps li { margin:7px 0; }
+  .example { background:#f8fafc; border:1px solid var(--line); border-radius:10px; padding:12px; overflow:auto; }
+  code { font-family:ui-monospace,SFMono-Regular,Consolas,monospace; }
+  .quiz-options { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+  .quiz-options button { min-height:44px; }
+  #quizFeedback { margin-top:10px; font-weight:650; min-height:25px; }
+  footer { text-align:center; color:var(--muted); padding:0 16px 24px; font-size:.85rem; }
+  @media(max-width:760px) { .grid { grid-template-columns:1fr; } .card { padding:16px; } .quiz-options { grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="eyebrow">DSA • Interactive learning series • 01</div>
+    <h1>Big O Notation — Growth Simulator</h1>
+    <p>See how an algorithm's work grows as the input gets larger. Move the slider, animate the graph, and compare common time complexities.</p>
+  </div>
+</header>
+<main>
+  <div class="grid">
+    <section class="card">
+      <h2>1. The main idea</h2>
+      <p><strong>Big O describes how an algorithm's work grows</strong> when the input size <code>n</code> increases. It helps us compare algorithms without depending on a particular computer.</p>
+      <div class="formula">O(1) &lt; O(log n) &lt; O(n) &lt; O(n log n) &lt; O(n²)</div>
+      <p class="muted">This is a typical order of growth, from slower-growing to faster-growing. Exponential time such as O(2ⁿ) grows even faster.</p>
+      <h3>Try changing the input size</h3>
+      <div class="controls">
+        <input id="nSlider" type="range" min="1" max="20" value="8" aria-label="Input size">
+        <div class="nvalue">n = <span id="nValue">8</span></div>
+      </div>
+      <div class="buttons">
+        <button id="playBtn" class="primary">▶ Animate growth</button>
+        <button id="pauseBtn">Ⅱ Pause</button>
+        <button id="resetBtn">↺ Reset</button>
+      </div>
+      <p>At the selected input size, the simplified operation counts are:</p>
+      <div id="counts"></div>
+      <div class="callout" id="insight">Choose a value to see the comparison.</div>
+    </section>
+    <section class="card">
+      <h2>2. Watch the curves grow</h2>
+      <p class="muted">Each curve is a simplified model of operation count. The vertical axis is capped so the slower-growing curves remain visible.</p>
+      <div class="chart-wrap">
+        <svg id="chart" viewBox="0 0 600 390" role="img" aria-label="Graph comparing algorithm growth rates">
+          <g id="gridLines"></g><g id="curves"></g><g id="cursor"></g>
+        </svg>
+      </div>
+      <div class="legend">
+        <span><i class="dot" style="background:#64748b"></i>O(1)</span>
+        <span><i class="dot" style="background:#2563eb"></i>O(log₂ n)</span>
+        <span><i class="dot" style="background:#059669"></i>O(n)</span>
+        <span><i class="dot" style="background:#ea580c"></i>O(n log₂ n)</span>
+        <span><i class="dot" style="background:#7c3aed"></i>O(n²)</span>
+      </div>
+    </section>
+  </div>
+
+  <section class="card" style="margin-top:18px">
+    <h2>3. Everyday examples</h2>
+    <div class="grid">
+      <div>
+        <h3>O(1) — Constant time</h3>
+        <p>Accessing an array element by index takes roughly one operation, regardless of array size.</p>
+        <div class="example"><code>value = arr[3]</code></div>
+        <h3>O(log n) — Logarithmic time</h3>
+        <p>Binary search repeatedly halves a <em>sorted</em> search range. Doubling the input adds only about one extra halving step.</p>
+        <div class="example"><code>search the middle → keep one half → repeat</code></div>
+        <h3>O(n) — Linear time</h3>
+        <p>Checking every item once means about twice as much work when the list doubles.</p>
+        <div class="example"><code>for each item in arr: inspect(item)</code></div>
+      </div>
+      <div>
+        <h3>O(n log n) — Linearithmic time</h3>
+        <p>Common in efficient comparison sorts such as merge sort. The data is processed across about <code>log₂ n</code> levels.</p>
+        <div class="example"><code>merge sort → divide into halves → merge</code></div>
+        <h3>O(n²) — Quadratic time</h3>
+        <p>A common pattern is one loop inside another, with each loop visiting all <code>n</code> items. Doubling <code>n</code> gives about four times the work.</p>
+        <div class="example"><code>for i = 1 to n:<br>&nbsp;&nbsp;for j = 1 to n: work()</code></div>
+        <div class="callout warning"><strong>Remember:</strong> Big O focuses on growth, not exact seconds. It often ignores constants and lower-order terms: <code>3n² + 5n + 7</code> is <code>O(n²)</code>.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="card" style="margin-top:18px">
+    <h2>4. Quick check</h2>
+    <p><strong>Question:</strong> If a list has <code>n</code> items and an algorithm checks every item once, what is its time complexity?</p>
+    <div class="quiz-options">
+      <button data-answer="O(1)">O(1)</button>
+      <button data-answer="O(log n)">O(log n)</button>
+      <button data-answer="O(n)">O(n)</button>
+    </div>
+    <div id="quizFeedback" aria-live="polite"></div>
+  </section>
+  <p class="muted" style="text-align:center;margin-top:18px">Next topic in your list: asymptotic comparison and growth-rate ordering.</p>
+</main>
+<footer>Self-contained HTML simulator • Works offline in a browser</footer>
+<script>
+(() => {
+  const slider = document.getElementById('nSlider');
+  const nValue = document.getElementById('nValue');
+  const counts = document.getElementById('counts');
+  const insight = document.getElementById('insight');
+  const grid = document.getElementById('gridLines');
+  const curves = document.getElementById('curves');
+  const cursor = document.getElementById('cursor');
+  const NS = 'http://www.w3.org/2000/svg';
+  const W=600, H=390, L=54, R=18, T=22, B=45, plotW=W-L-R, plotH=H-T-B, maxY=400;
+  const series = [
+    {name:'O(1)', color:'#64748b', fn:n=>1},
+    {name:'O(log₂ n)', color:'#2563eb', fn:n=>Math.log2(Math.max(1,n))},
+    {name:'O(n)', color:'#059669', fn:n=>n},
+    {name:'O(n log₂ n)', color:'#ea580c', fn:n=>n*Math.log2(Math.max(1,n))},
+    {name:'O(n²)', color:'#7c3aed', fn:n=>n*n}
+  ];
+  function el(tag, attrs={}, parent) {
+    const e=document.createElementNS(NS,tag);
+    Object.entries(attrs).forEach(([k,v])=>e.setAttribute(k,v));
+    if(parent) parent.appendChild(e);
+    return e;
+  }
+  function x(n){return L+(n-1)/19*plotW}
+  function y(v){return T+plotH-(Math.min(v,maxY)/maxY)*plotH}
+  function drawGrid(){
+    for(let v=0;v<=400;v+=100){
+      el('line',{x1:L,y1:y(v),x2:W-R,y2:y(v),stroke:'#e2e8f0','stroke-width':1},grid);
+      const t=el('text',{x:L-10,y:y(v)+4,'text-anchor':'end','font-size':12,fill:'#64748b'},grid); t.textContent=v;
+    }
+    for(let n=1;n<=20;n+=3){
+      el('line',{x1:x(n),y1:T,x2:x(n),y2:T+plotH,stroke:'#f0f3f8','stroke-width':1},grid);
+      const t=el('text',{x:x(n),y:H-18,'text-anchor':'middle','font-size':12,fill:'#64748b'},grid);t.textContent=n;
+    }
+    const yl=el('text',{x:15,y:T+plotH/2,transform:`rotate(-90 15 ${T+plotH/2})`,'text-anchor':'middle','font-size':12,fill:'#475569'},grid);yl.textContent='Relative operations';
+    const xl=el('text',{x:L+plotW/2,y:H-2,'text-anchor':'middle','font-size':12,fill:'#475569'},grid);xl.textContent='Input size (n)';
+  }
+  function drawCurves(){
+    series.forEach(s=>{
+      let d='';
+      for(let n=1;n<=20;n++){d+=(n===1?'M':'L')+x(n)+','+y(s.fn(n))+' ';}
+      el('path',{d,fill:'none',stroke:s.color,'stroke-width':3,'stroke-linecap':'round','stroke-linejoin':'round'},curves);
+    });
+  }
+  drawGrid(); drawCurves();
+  function update(){
+    const n=Number(slider.value); nValue.textContent=n;
+    const vals=series.map(s=>({name:s.name, val:s.fn(n), color:s.color}));
+    counts.innerHTML='';
+    vals.forEach(v=>{
+      const row=document.createElement('div');
+      row.style.cssText='display:flex;justify-content:space-between;gap:12px;padding:6px 0;border-bottom:1px solid #edf2f7';
+      row.innerHTML=`<span><span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:${v.color};margin-right:8px"></span>${v.name}</span><strong>${Number(v.val.toFixed(2)).toLocaleString()}</strong>`;
+      counts.appendChild(row);
+    });
+    cursor.innerHTML='';
+    el('line',{x1:x(n),y1:T,x2:x(n),y2:T+plotH,stroke:'#0f172a','stroke-dasharray':'5 5','stroke-width':1.5},cursor);
+    series.forEach(s=>el('circle',{cx:x(n),cy:y(s.fn(n)),r:5,fill:s.color,stroke:'white','stroke-width':2},cursor));
+    if(n<=4) insight.textContent=`At n = ${n}, the growth curves are still close together. Try moving the slider toward 20 to see how quickly n² grows.`;
+    else if(n<=10) insight.textContent=`At n = ${n}, O(n²) needs about ${n*n} simplified operations, while O(n) needs about ${n}. The gap grows as n increases.`;
+    else insight.textContent=`At n = ${n}, O(n²) is ${n} times O(n) in this simplified model (${n*n} vs ${n}). This is why quadratic algorithms can become slow on large inputs.`;
+  }
+  slider.addEventListener('input',update); update();
+  let timer=null, animN=1;
+  document.getElementById('playBtn').addEventListener('click',()=>{
+    if(timer) clearInterval(timer);
+    animN=Number(slider.value);
+    timer=setInterval(()=>{animN=animN>=20?1:animN+1;slider.value=animN;update();},450);
+  });
+  document.getElementById('pauseBtn').addEventListener('click',()=>{if(timer)clearInterval(timer);timer=null;});
+  document.getElementById('resetBtn').addEventListener('click',()=>{if(timer)clearInterval(timer);timer=null;slider.value=1;update();});
+  document.querySelectorAll('[data-answer]').forEach(btn=>btn.addEventListener('click',()=>{
+    const f=document.getElementById('quizFeedback');
+    if(btn.dataset.answer==='O(n)'){f.textContent='Correct! Every item is checked once, so the work grows in proportion to n.';f.style.color='#047857';}
+    else {f.textContent='Not quite. If the list doubles, you inspect about twice as many items. Try O(n).';f.style.color='#b45309';}
+  }));
+})();
+</script>
+</body>
+</html>

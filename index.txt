@@ -1,0 +1,118 @@
+DSA & Algorithm Analysis — Complete Topic List
+1. Asymptotic Notations
+Big O Notation — \(O\)
+Asymptotic Comparison
+Decreasing order of growth
+Constant, logarithmic, polynomial and exponential growth
+Omega Notation — \(\Omega\)
+Theta Notation — \(\Theta\)
+Little-o Notation — \(o\)
+Little-Omega Notation — \(\omega\)
+2. Properties / Rules
+Reflexivity
+Transitivity
+Transpose Symmetry
+Commutativity
+3. Algorithm Analysis
+Time Complexity
+Space Complexity
+4. Loops
+4.1 Nested Loops
+Independent Nested Loops
+Dependent Nested Loops
+4.2 Recursive Algorithms
+Space Complexity of Recursive Algorithms (Control Flow)
+Time Complexity of Recursive Algorithms
+5. Mathematical Concepts for Algorithms
+AP (Arithmetic Progression) and GP (Geometric Progression)
+Tower of Hanoi
+3 disks
+4 disks
+5 disks
+\(n\) disks
+Euclidean GCD Algorithm
+6. Methods to Solve Recurrence Relations
+Substitution Method
+Divide and Conquer Method
+Recursion Tree Method
+Master Theorem
+Change of Variables Method
+Generating Function Method
+7. Sorting Algorithms
+Merge Sort
+Quick Sort
+Median of Median Algorithm
+Heap Sort
+Median of Median Algorithm — detailed study
+Find the \(k\)-th Smallest Element
+Searching Algorithms
+Linear Search
+Straight Binary Search
+Recursive Binary Search
+8. Strassen's Matrix Multiplication
+Strassen's Matrix Multiplication — Straight Method
+Strassen's Matrix Multiplication — Divide and Conquer Method
+Strassen's Matrix Multiplication — Recursive Method
+9. Trees
+Binary Trees
+Strict Binary Tree
+Complete Binary Tree
+Full Binary Tree
+Priority Queue
+Dictionary Data Structure
+10. Heaps
+Max Heap / Min Heap
+Insertion of a Key
+Deletion of a Node
+Construction of a Max Heap
+Top-Down Heap Design
+Bottom-Up Heap Design
+Heap Sort
+11. Graph Representation
+Adjacency List Representation
+Adjacency Matrix Representation
+Sparse Graph
+Dense Graph
+12. Greedy Method
+12.1 Single-Source Shortest Path Algorithms
+Dijkstra's Algorithm — Greedy
+Bellman–Ford Algorithm — not Greedy
+Minimum Spanning Tree
+Kruskal's Algorithm
+Prim's Algorithm
+12.2 Minimum Spanning Tree — Construction
+Prim's Algorithm — Greedy
+Kruskal's Algorithm — Greedy
+12.3 Huffman Coding
+Fixed-Length Encoding
+Optimal Prefix Encoding
+12.4 Job Scheduling
+1. Job Scheduling Based on Deadline
+13. Dynamic Programming
+1. Matrix Chain Multiplication
+14. Binary Search Trees (BST)
+Binary Search Trees
+Largest Common Subsequence (LCS)
+Knapsack Problem
+Fractional Knapsack
+0/1 Knapsack
+All-Pairs Shortest Path Algorithm
+PSP Using Floyd's Algorithm
+Transitive Closure of a Graph
+15. Graph Traversal Algorithms
+Breadth-First Search (BFS)
+Depth-First Search (DFS)
+Edge Classification
+Undirected Graph
+Directed Graph
+Cycle Detection in a Directed Graph
+Connected Components of an Undirected Graph
+Biconnected Components of an Undirected Graph
+Procedure to Find Non-Biconnected Components of a Graph
+Strongly Connected Components of a Directed Graph
+16. Sorting Techniques
+Bubble Sort
+Selection Sort
+Insertion Sort
+Counting Sort
+Radix Sort

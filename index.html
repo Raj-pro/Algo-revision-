@@ -1,0 +1,2765 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DSA & Algorithm Analysis — Complete Interactive Simulation Lab</title>
+  <meta name="description" content="Master Data Structures & Algorithms with 63 interactive visual simulators covering asymptotic notations, recurrences, graphs, sorting, and dynamic programming.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --font-main: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', ui-monospace, Consolas, monospace;
+      
+      /* Dark Theme (Default) */
+      --bg-base: #090d16;
+      --bg-surface: #101626;
+      --bg-surface-elevated: #162035;
+      --bg-surface-hover: #1c2944;
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-highlight: rgba(99, 102, 241, 0.35);
+      --text-main: #f3f4f6;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      
+      --primary: #6366f1;
+      --primary-light: #818cf8;
+      --primary-glow: rgba(99, 102, 241, 0.25);
+      --accent-cyan: #06b6d4;
+      --accent-emerald: #10b981;
+      --accent-amber: #f59e0b;
+      --accent-rose: #f43f5e;
+      --accent-violet: #8b5cf6;
+      
+      --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.25);
+      --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.35);
+      --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.5);
+      --glass-bg: rgba(16, 22, 38, 0.78);
+      --glass-blur: blur(14px);
+    }
+
+    [data-theme="light"] {
+      --bg-base: #f8fafc;
+      --bg-surface: #ffffff;
+      --bg-surface-elevated: #f1f5f9;
+      --bg-surface-hover: #e2e8f0;
+      --border-subtle: rgba(15, 23, 42, 0.08);
+      --border-highlight: rgba(99, 102, 241, 0.3);
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --text-dim: #94a3b8;
+      
+      --primary: #4f46e5;
+      --primary-light: #6366f1;
+      --primary-glow: rgba(79, 70, 229, 0.15);
+      --shadow-sm: 0 2px 6px rgba(15, 23, 42, 0.06);
+      --shadow-md: 0 8px 20px rgba(15, 23, 42, 0.08);
+      --shadow-lg: 0 16px 36px rgba(15, 23, 42, 0.12);
+      --glass-bg: rgba(255, 255, 255, 0.85);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body {
+      font-family: var(--font-main);
+      background-color: var(--bg-base);
+      color: var(--text-main);
+      line-height: 1.55;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      transition: background-color 0.25s ease, color 0.25s ease;
+    }
+
+    /* Ambient Background Glows */
+    .ambient-glow {
+      position: fixed;
+      pointer-events: none;
+      z-index: 0;
+      border-radius: 50%;
+      filter: blur(120px);
+      opacity: 0.18;
+      transition: opacity 0.3s;
+    }
+    .glow-1 { top: -100px; left: -100px; width: 500px; height: 500px; background: var(--primary); }
+    .glow-2 { top: 30%; right: -150px; width: 600px; height: 600px; background: var(--accent-cyan); }
+    .glow-3 { bottom: 10%; left: 10%; width: 550px; height: 550px; background: var(--accent-violet); }
+
+    .site-wrapper {
+      position: relative;
+      z-index: 1;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 24px;
+      width: 100%;
+    }
+
+    /* Top Navigation Bar */
+    .top-nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--glass-bg);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 14px 0;
+      margin-bottom: 32px;
+    }
+    .nav-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--text-main);
+    }
+    .brand-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--primary), var(--accent-cyan));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-weight: 800;
+      font-size: 1.15rem;
+      box-shadow: 0 4px 14px var(--primary-glow);
+    }
+    .brand-text h1 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+    .brand-text span {
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 8px 16px;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-surface);
+      color: var(--text-main);
+      text-decoration: none;
+    }
+    .btn:hover {
+      background: var(--bg-surface-hover);
+      border-color: var(--border-highlight);
+      transform: translateY(-1px);
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), #4338ca);
+      border-color: var(--primary);
+      color: #ffffff;
+      box-shadow: 0 4px 16px var(--primary-glow);
+    }
+    .btn-primary:hover {
+      background: linear-gradient(135deg, var(--primary-light), var(--primary));
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+    }
+    .btn-icon {
+      width: 38px;
+      height: 38px;
+      padding: 0;
+      border-radius: 10px;
+    }
+
+    /* Hero Section */
+    .hero {
+      padding: 24px 0 36px;
+      text-align: center;
+    }
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-subtle);
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--primary-light);
+      margin-bottom: 18px;
+    }
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent-emerald);
+      box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+      animation: pulse 1.8s infinite;
+    }
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+      70% { box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+    }
+    .hero h2 {
+      font-size: clamp(2.2rem, 5vw, 3.5rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      margin-bottom: 16px;
+    }
+    .hero h2 .gradient-text {
+      background: linear-gradient(120deg, #818cf8 0%, #38bdf8 50%, #c084fc 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero-desc {
+      max-width: 780px;
+      margin: 0 auto 28px;
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* Stat Cards Bar */
+    .stats-bar {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 36px;
+    }
+    .stat-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      box-shadow: var(--shadow-sm);
+    }
+    .stat-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-subtle);
+      flex-shrink: 0;
+    }
+    .stat-content {
+      display: flex;
+      flex-direction: column;
+    }
+    .stat-number {
+      font-size: 1.5rem;
+      font-weight: 800;
+      line-height: 1.2;
+      color: var(--text-main);
+    }
+    .stat-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    /* Progress Tracker Panel */
+    .progress-panel {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      padding: 18px 24px;
+      margin-bottom: 32px;
+      box-shadow: var(--shadow-sm);
+    }
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .progress-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .progress-counter {
+      font-size: 0.88rem;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      color: var(--primary-light);
+    }
+    .progress-bar-bg {
+      height: 8px;
+      background: var(--bg-surface-elevated);
+      border-radius: 999px;
+      overflow: hidden;
+      position: relative;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--primary), var(--accent-cyan), var(--accent-emerald));
+      border-radius: 999px;
+      transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* Control Panel: Search & Filter Tabs */
+    .control-panel {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 18px;
+      padding: 20px;
+      margin-bottom: 32px;
+      box-shadow: var(--shadow-md);
+    }
+    .search-row {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+    .search-input-wrapper {
+      position: relative;
+      flex: 1;
+      min-width: 260px;
+    }
+    .search-icon {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-dim);
+      font-size: 1rem;
+      pointer-events: none;
+    }
+    .search-input {
+      width: 100%;
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 12px 42px 12px 42px;
+      font-family: inherit;
+      font-size: 0.95rem;
+      color: var(--text-main);
+      outline: none;
+      transition: all 0.2s;
+    }
+    .search-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px var(--primary-glow);
+      background: var(--bg-base);
+    }
+    .search-input::placeholder {
+      color: var(--text-dim);
+    }
+    .search-kbd {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-dim);
+      border-radius: 6px;
+      padding: 2px 7px;
+      font-size: 0.72rem;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      pointer-events: none;
+    }
+    .clear-search-btn {
+      position: absolute;
+      right: 48px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: var(--text-dim);
+      cursor: pointer;
+      font-size: 1.1rem;
+      display: none;
+    }
+
+    .view-toggles {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Category & Filter Pills */
+    .filter-pills-row {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 6px;
+      scrollbar-width: thin;
+    }
+    .filter-pills-row::-webkit-scrollbar {
+      height: 4px;
+    }
+    .filter-pills-row::-webkit-scrollbar-thumb {
+      background: var(--border-subtle);
+      border-radius: 4px;
+    }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: 999px;
+      padding: 6px 14px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+    .pill:hover {
+      color: var(--text-main);
+      border-color: var(--border-highlight);
+    }
+    .pill.active {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #ffffff;
+      box-shadow: 0 2px 10px var(--primary-glow);
+    }
+    .pill-count {
+      background: rgba(0, 0, 0, 0.2);
+      padding: 1px 6px;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-family: var(--font-mono);
+    }
+    .pill.active .pill-count {
+      background: rgba(255, 255, 255, 0.25);
+    }
+
+    /* Results Header */
+    .results-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding: 0 4px;
+    }
+    .results-count {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+    .results-count strong {
+      color: var(--text-main);
+    }
+
+    /* Sectional Chapter Group View */
+    .chapter-section {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 18px;
+      margin-bottom: 28px;
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      transition: border-color 0.2s;
+    }
+    .chapter-section:hover {
+      border-color: var(--border-highlight);
+    }
+    .chapter-header {
+      padding: 20px 24px;
+      background: linear-gradient(90deg, var(--bg-surface-elevated) 0%, var(--bg-surface) 100%);
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      user-select: none;
+    }
+    .chapter-info {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .chapter-icon-badge {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: var(--bg-base);
+      border: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      flex-shrink: 0;
+    }
+    .chapter-title-group h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .chapter-desc {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+    .chapter-toggle-btn {
+      color: var(--text-dim);
+      font-size: 1.2rem;
+      transition: transform 0.25s;
+    }
+    .chapter-section.collapsed .chapter-toggle-btn {
+      transform: rotate(-90deg);
+    }
+    .chapter-section.collapsed .simulators-grid {
+      display: none;
+    }
+
+    /* Simulator Cards Grid */
+    .simulators-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+      gap: 20px;
+      padding: 24px;
+    }
+
+    /* Flat Grid Container for View Switcher */
+    #flatGridView {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+
+    /* Simulator Card Component */
+    .sim-card {
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    }
+    .sim-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--border-highlight);
+      box-shadow: var(--shadow-md), 0 0 20px var(--primary-glow);
+      background: var(--bg-surface-hover);
+    }
+    .sim-card.is-completed {
+      border-color: rgba(16, 185, 129, 0.35);
+    }
+    .sim-card.is-completed::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--accent-emerald);
+      border-radius: 14px 14px 0 0;
+    }
+
+    .card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+    .card-badges {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .badge-num {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 700;
+      background: var(--bg-base);
+      color: var(--primary-light);
+      border: 1px solid var(--border-subtle);
+      padding: 2px 8px;
+      border-radius: 6px;
+    }
+    .badge-ch {
+      font-size: 0.72rem;
+      font-weight: 600;
+      background: rgba(99, 102, 241, 0.12);
+      color: var(--primary-light);
+      padding: 2px 8px;
+      border-radius: 6px;
+    }
+
+    .card-quick-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .action-icon-btn {
+      background: none;
+      border: 1px solid transparent;
+      color: var(--text-dim);
+      border-radius: 6px;
+      padding: 4px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      line-height: 1;
+      transition: all 0.2s;
+    }
+    .action-icon-btn:hover {
+      color: var(--text-main);
+      background: var(--bg-base);
+      border-color: var(--border-subtle);
+    }
+    .action-icon-btn.active-fav {
+      color: var(--accent-amber);
+    }
+    .action-icon-btn.active-done {
+      color: var(--accent-emerald);
+    }
+
+    .card-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      line-height: 1.35;
+      margin-bottom: 8px;
+      color: var(--text-main);
+    }
+    .card-desc {
+      font-size: 0.84rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin-bottom: 14px;
+      flex-grow: 1;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-bottom: 16px;
+    }
+    .tag-item {
+      font-size: 0.7rem;
+      font-family: var(--font-mono);
+      background: var(--bg-base);
+      color: var(--text-muted);
+      border: 1px solid var(--border-subtle);
+      border-radius: 4px;
+      padding: 1px 6px;
+    }
+
+    .card-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: auto;
+    }
+    .card-btn {
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      text-align: center;
+      text-decoration: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.2s;
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-base);
+      color: var(--text-main);
+    }
+    .card-btn:hover {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #fff;
+    }
+    .card-btn.btn-launch {
+      background: rgba(99, 102, 241, 0.15);
+      border-color: rgba(99, 102, 241, 0.35);
+      color: var(--primary-light);
+    }
+    .card-btn.btn-launch:hover {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #fff;
+    }
+
+    /* Empty Results State */
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 18px;
+      margin-bottom: 40px;
+    }
+    .empty-icon {
+      font-size: 3rem;
+      margin-bottom: 12px;
+      opacity: 0.8;
+    }
+    .empty-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .empty-desc {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-bottom: 18px;
+    }
+
+    /* Interactive Simulator Modal Preview */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(4, 7, 13, 0.82);
+      backdrop-filter: blur(10px);
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      animation: modalFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .modal-overlay.active {
+      display: flex;
+    }
+    @keyframes modalFadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    .modal-container {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 18px;
+      width: 100%;
+      max-width: 1200px;
+      height: 90vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: var(--shadow-lg);
+      overflow: hidden;
+      animation: modalSlideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes modalSlideUp {
+      from { transform: translateY(20px) scale(0.98); }
+      to { transform: translateY(0) scale(1); }
+    }
+    .modal-header {
+      padding: 14px 20px;
+      background: var(--bg-surface-elevated);
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .modal-title-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      overflow: hidden;
+    }
+    .modal-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .modal-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+    .modal-body {
+      flex: 1;
+      position: relative;
+      background: var(--bg-base);
+    }
+    .modal-iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+    }
+
+    /* Footer */
+    footer {
+      margin-top: auto;
+      border-top: 1px solid var(--border-subtle);
+      background: var(--bg-surface);
+      padding: 36px 0;
+      color: var(--text-muted);
+      font-size: 0.88rem;
+    }
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 900px) {
+      .stats-bar { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 640px) {
+      .stats-bar { grid-template-columns: 1fr; }
+      .search-row { flex-direction: column; }
+      .nav-inner { flex-wrap: wrap; }
+      .hero h2 { font-size: 1.85rem; }
+      .simulators-grid, #flatGridView { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Ambient glow spheres -->
+  <div class="ambient-glow glow-1"></div>
+  <div class="ambient-glow glow-2"></div>
+  <div class="ambient-glow glow-3"></div>
+
+  <!-- Navigation -->
+  <header class="top-nav">
+    <div class="nav-inner">
+      <a href="#" class="brand">
+        <div class="brand-icon">Ω</div>
+        <div class="brand-text">
+          <h1>Algorithm Analysis Lab</h1>
+          <span>Interactive DSA Visualizer</span>
+        </div>
+      </a>
+      <div class="nav-actions">
+        <button id="randomBtn" class="btn" title="Open a random simulator">
+          <span>🎲</span>
+          <span>Surprise Me</span>
+        </button>
+        <button id="themeToggle" class="btn btn-icon" title="Toggle Dark/Light Theme">
+          <span id="themeIcon">☀️</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="site-wrapper">
+    <!-- Hero Banner -->
+    <section class="hero">
+      <div class="hero-eyebrow">
+        <span class="pulse-dot"></span>
+        <span>Interactive Learning Suite • 63 Production Simulators</span>
+      </div>
+      <h2>
+        DSA &amp; Algorithm Analysis<br>
+        <span class="gradient-text">Interactive Simulation Lab</span>
+      </h2>
+      <p class="hero-desc">
+        Explore, manipulate, and master data structures and algorithms in real time. 
+        Featuring 63 purpose-built interactive modules spanning all 16 domains from 
+        asymptotic bounds to recurrence methods, graphs, trees, and linear-time sorting.
+      </p>
+    </section>
+
+    <!-- Stats Bar -->
+    <section class="stats-bar" aria-label="Course Metrics">
+      <div class="stat-card">
+        <div class="stat-icon">⚡</div>
+        <div class="stat-content">
+          <span class="stat-number">63</span>
+          <span class="stat-label">Interactive Modules</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">📚</div>
+        <div class="stat-content">
+          <span class="stat-number">16</span>
+          <span class="stat-label">Syllabus Chapters</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">🎯</div>
+        <div class="stat-content">
+          <span class="stat-number" id="completedStatCount">0 / 63</span>
+          <span class="stat-label">Modules Completed</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">⭐</div>
+        <div class="stat-content">
+          <span class="stat-number" id="starredStatCount">0</span>
+          <span class="stat-label">Bookmarked Topics</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Progress Tracker -->
+    <section class="progress-panel">
+      <div class="progress-header">
+        <span class="progress-title">
+          <span>🚀</span>
+          <span>Mastery Progress</span>
+        </span>
+        <span class="progress-counter" id="progressPercentage">0% Completed</span>
+      </div>
+      <div class="progress-bar-bg">
+        <div class="progress-bar-fill" id="progressBar"></div>
+      </div>
+    </section>
+
+    <!-- Search & Control Panel -->
+    <section class="control-panel">
+      <div class="search-row">
+        <div class="search-input-wrapper">
+          <span class="search-icon">🔍</span>
+          <input 
+            type="text" 
+            id="searchInput" 
+            class="search-input" 
+            placeholder="Search any algorithm, notation (O, Ω, Θ), chapter, or tag... (e.g. Dijkstra, Master Theorem, Heap Sort)"
+            autocomplete="off"
+          >
+          <button id="clearSearchBtn" class="clear-search-btn" title="Clear search">×</button>
+          <span class="search-kbd">/</span>
+        </div>
+        <div class="view-toggles">
+          <button id="viewGroupedBtn" class="btn btn-primary" title="Grouped by Syllabus Chapters">
+            <span>📑</span>
+            <span>By Chapter</span>
+          </button>
+          <button id="viewGridBtn" class="btn" title="Compact All-in-One Grid">
+            <span>🔲</span>
+            <span>All Cards</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Quick Filter Pills -->
+      <div class="filter-pills-row" id="filterPills">
+        <button class="pill active" data-filter="all">All Simulators <span class="pill-count">63</span></button>
+        <button class="pill" data-filter="starred">★ Bookmarked <span class="pill-count" id="pillStarredCount">0</span></button>
+        <button class="pill" data-filter="completed">✓ Completed <span class="pill-count" id="pillDoneCount">0</span></button>
+        <button class="pill" data-filter="cat-Asymptotics">📐 Asymptotics <span class="pill-count">6</span></button>
+        <button class="pill" data-filter="cat-Theory">⚖️ Properties <span class="pill-count">4</span></button>
+        <button class="pill" data-filter="cat-Complexity">⏱️ Complexity <span class="pill-count">2</span></button>
+        <button class="pill" data-filter="cat-Recursion">🔄 Loops &amp; Recursion <span class="pill-count">2</span></button>
+        <button class="pill" data-filter="cat-Math">🔢 Math &amp; Series <span class="pill-count">3</span></button>
+        <button class="pill" data-filter="cat-Recurrence">🌲 Recurrences <span class="pill-count">5</span></button>
+        <button class="pill" data-filter="cat-Sorting & Searching">🔍 Sorting &amp; Searching <span class="pill-count">7</span></button>
+        <button class="pill" data-filter="cat-Divide & Conquer">🧮 Strassen <span class="pill-count">1</span></button>
+        <button class="pill" data-filter="cat-Trees">🌿 Trees <span class="pill-count">3</span></button>
+        <button class="pill" data-filter="cat-Heaps">🏔️ Heaps <span class="pill-count">3</span></button>
+        <button class="pill" data-filter="cat-Greedy">💎 Greedy <span class="pill-count">6</span></button>
+        <button class="pill" data-filter="cat-Dynamic Programming">🧩 DP <span class="pill-count">1</span></button>
+        <button class="pill" data-filter="cat-Advanced Algorithms">⚡ BST &amp; Advanced <span class="pill-count">5</span></button>
+        <button class="pill" data-filter="cat-Graphs">🗺️ Graphs <span class="pill-count">10</span></button>
+        <button class="pill" data-filter="cat-Sorting">📊 Sorting Techniques <span class="pill-count">5</span></button>
+      </div>
+    </section>
+
+    <!-- Results Meta Counter -->
+    <div class="results-meta">
+      <div class="results-count" id="resultsCount">
+        Showing <strong>63</strong> simulators
+      </div>
+      <div>
+        <button id="expandCollapseAllBtn" class="btn" style="padding: 4px 10px; font-size: 0.78rem;">Collapse All</button>
+      </div>
+    </div>
+
+    <!-- Grouped Chapters View (Default) -->
+    <div id="groupedView">
+      <!-- Chapter sections will be generated dynamically -->
+    </div>
+
+    <!-- Flat Grid View -->
+    <div id="flatGridView" style="display: none;">
+      <!-- Flat grid cards dynamically inserted here -->
+    </div>
+
+    <!-- Empty state -->
+    <div id="emptyState" class="empty-state" style="display: none;">
+      <div class="empty-icon">🔎</div>
+      <h3 class="empty-title">No matching simulators found</h3>
+      <p class="empty-desc">Try searching with a different term, algorithm name, or resetting your filters.</p>
+      <button id="resetFilterBtn" class="btn btn-primary">Reset Filters &amp; Search</button>
+    </div>
+  </div>
+
+  <!-- Interactive Quick Preview Modal -->
+  <div id="previewModal" class="modal-overlay" role="dialog" aria-modal="true">
+    <div class="modal-container">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <span class="badge-num" id="modalBadgeNum">#01</span>
+          <h3 class="modal-title" id="modalTitle">Simulator Title</h3>
+        </div>
+        <div class="modal-controls">
+          <button id="modalPrevBtn" class="btn btn-icon" title="Previous Simulator (←)">◀</button>
+          <button id="modalNextBtn" class="btn btn-icon" title="Next Simulator (→)">▶</button>
+          <a id="modalExternalLink" href="#" target="_blank" class="btn" title="Open in new window / full page">
+            <span>↗</span>
+            <span>Full Page</span>
+          </a>
+          <button id="modalCloseBtn" class="btn btn-icon" title="Close (Esc)">✕</button>
+        </div>
+      </div>
+      <div class="modal-body">
+        <iframe id="modalIframe" class="modal-iframe" title="Interactive Simulator Frame" src="about:blank"></iframe>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="site-wrapper footer-inner">
+      <div>
+        <strong>DSA &amp; Algorithm Analysis Interactive Lab</strong> — Built for intuitive conceptual mastery.
+      </div>
+      <div>
+        <span>All 63 interactive simulations run 100% locally with zero external server dependencies.</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Application Logic & Embedded Data -->
+  <script>
+    // Embedded Data: Simulators & Chapters
+    const SIMULATORS = [
+  {
+    "num": 1,
+    "file": "dsa_big_o_simulator.html",
+    "title": "DSA Simulator 01 — Big O Notation",
+    "h1": "Big O Notation — Growth Simulator",
+    "eyebrow": "DSA • Interactive learning series • 01",
+    "desc": "See how an algorithm's work grows as the input gets larger. Move the slider, animate the graph, and compare common time complexities.",
+    "chapterId": 1,
+    "chapterTitle": "1. Asymptotic Notations",
+    "chapterIcon": "📐",
+    "category": "Asymptotics",
+    "tags": [
+      "Big-O",
+      "Upper Bound",
+      "Order of Growth",
+      "O(n)"
+    ]
+  },
+  {
+    "num": 2,
+    "file": "dsa_asymptotic_comparison_simulator.html",
+    "title": "DSA Simulator 02 — Asymptotic Comparison",
+    "h1": "Asymptotic Comparison",
+    "eyebrow": "DSA • Interactive learning series • 02",
+    "desc": "Compare how quickly functions grow. Learn why logarithmic growth is slower than linear growth, and why exponential growth becomes huge.",
+    "chapterId": 1,
+    "chapterTitle": "1. Asymptotic Notations",
+    "chapterIcon": "📐",
+    "category": "Asymptotics",
+    "tags": [
+      "Growth Rates",
+      "Polynomial vs Exp",
+      "Logarithmic",
+      "Comparison"
+    ]
+  },
+  {
+    "num": 3,
+    "file": "dsa_omega_notation_simulator.html",
+    "title": "DSA Simulator 03 — Omega Notation",
+    "h1": "Omega Notation (Ω)",
+    "eyebrow": "DSA • Interactive learning series • 03",
+    "desc": "Learn how Ω describes a lower bound on an algorithm's growth, using a simple visual example and an interactive graph.",
+    "chapterId": 1,
+    "chapterTitle": "1. Asymptotic Notations",
+    "chapterIcon": "📐",
+    "category": "Asymptotics",
+    "tags": [
+      "Omega (Ω)",
+      "Lower Bound",
+      "Best Case",
+      "Growth"
+    ]
+  },
+  {
+    "num": 4,
+    "file": "dsa_theta_notation_simulator.html",
+    "title": "DSA Simulator 04 — Theta Notation",
+    "h1": "Theta Notation (Θ)",
+    "eyebrow": "DSA • Interactive learning series • 04",
+    "desc": "Understand a tight asymptotic bound: when a function is bounded both above and below by the same growth rate.",
+    "chapterId": 1,
+    "chapterTitle": "1. Asymptotic Notations",
+    "chapterIcon": "📐",
+    "category": "Asymptotics",
+    "tags": [
+      "Theta (Θ)",
+      "Tight Bound",
+      "Sandwich Theorem",
+      "Asymptotics"
+    ]
+  },
+  {
+    "num": 5,
+    "file": "dsa_little_o_notation_simulator.html",
+    "title": "DSA Simulator 05 — Little-o Notation",
+    "h1": "Little-o Notation (o)",
+    "eyebrow": "DSA • Interactive learning series • 05",
+    "desc": "Learn how little-o means a function grows strictly slower than another function in the long run.",
+    "chapterId": 1,
+    "chapterTitle": "1. Asymptotic Notations",
+    "chapterIcon": "📐",
+    "category": "Asymptotics",
+    "tags": [
+      "Little-o",
+      "Strict Upper Bound",
+      "Limits",
+      "Strictly Slower"
+    ]
+  },
+  {
+    "num": 6,
+    "file": "dsa_little_omega_notation_simulator.html",
+    "title": "DSA Simulator 06 — Little-Omega Notation",
+    "h1": "Little-Omega Notation (ω)",
+    "eyebrow": "DSA • Interactive learning series • 06",
+    "desc": "Learn how little-omega expresses a function that grows strictly faster than another function.",
+    "chapterId": 1,
+    "chapterTitle": "1. Asymptotic Notations",
+    "chapterIcon": "📐",
+    "category": "Asymptotics",
+    "tags": [
+      "Little-ω",
+      "Strict Lower Bound",
+      "Strictly Faster",
+      "Limits"
+    ]
+  },
+  {
+    "num": 7,
+    "file": "dsa_reflexivity_simulator.html",
+    "title": "DSA Simulator 07 — Reflexivity",
+    "h1": "Reflexivity Property",
+    "eyebrow": "DSA • Interactive learning series • 07",
+    "desc": "Learn the reflexive rule used in asymptotic notation: every function is asymptotically bounded by itself.",
+    "chapterId": 2,
+    "chapterTitle": "2. Properties / Rules",
+    "chapterIcon": "⚖️",
+    "category": "Theory",
+    "tags": [
+      "Reflexivity",
+      "Asymptotic Rules",
+      "Equivalence",
+      "f(n)=O(f(n))"
+    ]
+  },
+  {
+    "num": 8,
+    "file": "dsa_transitivity_simulator.html",
+    "title": "DSA Simulator 08 — Transitivity",
+    "h1": "Transitivity Property",
+    "eyebrow": "DSA • Interactive learning series • 08",
+    "desc": "Use a chain of asymptotic relationships to conclude how the first function compares with the third.",
+    "chapterId": 2,
+    "chapterTitle": "2. Properties / Rules",
+    "chapterIcon": "⚖️",
+    "category": "Theory",
+    "tags": [
+      "Transitivity",
+      "Property Chain",
+      "Inherited Bounds",
+      "Rules"
+    ]
+  },
+  {
+    "num": 9,
+    "file": "dsa_transpose_symmetry_simulator.html",
+    "title": "DSA Simulator 09 — Transpose Symmetry",
+    "h1": "Transpose Symmetry",
+    "eyebrow": "DSA • Interactive learning series • 09",
+    "desc": "In asymptotic notation, this commonly refers to symmetry: swapping the two functions in a Theta relationship keeps the relationship true.",
+    "chapterId": 2,
+    "chapterTitle": "2. Properties / Rules",
+    "chapterIcon": "⚖️",
+    "category": "Theory",
+    "tags": [
+      "Transpose Symmetry",
+      "Dual Bounds",
+      "O & Ω Duality",
+      "Symmetry"
+    ]
+  },
+  {
+    "num": 10,
+    "file": "dsa_commutativity_simulator.html",
+    "title": "DSA Simulator 10 — Commutativity",
+    "h1": "Commutativity",
+    "eyebrow": "DSA • Interactive learning series • 10",
+    "desc": "Learn when swapping the order of two operands leaves a result unchanged—and why this is different from asymptotic notation rules.",
+    "chapterId": 2,
+    "chapterTitle": "2. Properties / Rules",
+    "chapterIcon": "⚖️",
+    "category": "Theory",
+    "tags": [
+      "Commutativity",
+      "Operation Order",
+      "Algebraic Rules",
+      "Operations"
+    ]
+  },
+  {
+    "num": 11,
+    "file": "dsa_time_complexity_simulator.html",
+    "title": "DSA Simulator 11 — Time Complexity",
+    "h1": "Time Complexity",
+    "eyebrow": "DSA • Interactive learning series • 11",
+    "desc": "Understand how the number of operations grows as the input size increases.",
+    "chapterId": 3,
+    "chapterTitle": "3. Algorithm Analysis",
+    "chapterIcon": "⏱️",
+    "category": "Complexity",
+    "tags": [
+      "Time Complexity",
+      "Operation Counting",
+      "Worst Case",
+      "Loops"
+    ]
+  },
+  {
+    "num": 12,
+    "file": "dsa_space_complexity_simulator.html",
+    "title": "DSA Simulator 12 — Space Complexity",
+    "h1": "Space Complexity",
+    "eyebrow": "DSA • Interactive learning series • 12",
+    "desc": "See how much extra memory an algorithm needs as input size grows.",
+    "chapterId": 3,
+    "chapterTitle": "3. Algorithm Analysis",
+    "chapterIcon": "⏱️",
+    "category": "Complexity",
+    "tags": [
+      "Space Complexity",
+      "Auxiliary Memory",
+      "Call Stack",
+      "Allocation"
+    ]
+  },
+  {
+    "num": 13,
+    "file": "dsa_nested_loops_simulator.html",
+    "title": "DSA Simulator 13 — Nested Loops",
+    "h1": "Nested Loops: Independent vs. Dependent",
+    "eyebrow": "DSA • Interactive learning series • 13",
+    "desc": "Watch how loop bounds determine the total number of iterations.",
+    "chapterId": 4,
+    "chapterTitle": "4. Loops & Recursion",
+    "chapterIcon": "🔄",
+    "category": "Recursion",
+    "tags": [
+      "Nested Loops",
+      "Independent Loops",
+      "Dependent Loops",
+      "O(n²)"
+    ]
+  },
+  {
+    "num": 14,
+    "file": "dsa_recursive_algorithms_simulator.html",
+    "title": "DSA Simulator 14 — Recursion: Time and Stack Space",
+    "h1": "Recursive Algorithms: Time & Stack Space",
+    "eyebrow": "DSA • Interactive learning series • 14",
+    "desc": "Understand base cases, recursive calls, and why recursion uses stack memory.",
+    "chapterId": 4,
+    "chapterTitle": "4. Loops & Recursion",
+    "chapterIcon": "🔄",
+    "category": "Recursion",
+    "tags": [
+      "Recursion Stack",
+      "Call Tree",
+      "Control Flow",
+      "Stack Depth"
+    ]
+  },
+  {
+    "num": 15,
+    "file": "dsa_ap_gp_simulator.html",
+    "title": "DSA Simulator 15 — AP and GP",
+    "h1": "Arithmetic Progression (AP) & Geometric Progression (GP)",
+    "eyebrow": "DSA • Interactive learning series • 15",
+    "desc": "Learn the patterns and formulas that often appear when analyzing algorithms.",
+    "chapterId": 5,
+    "chapterTitle": "5. Mathematical Concepts for Algorithms",
+    "chapterIcon": "🔢",
+    "category": "Math",
+    "tags": [
+      "Arithmetic Series",
+      "Geometric Series",
+      "Series Sums",
+      "Math"
+    ]
+  },
+  {
+    "num": 16,
+    "file": "dsa_tower_of_hanoi_simulator.html",
+    "title": "DSA Simulator 16 — Tower of Hanoi",
+    "h1": "Tower of Hanoi",
+    "eyebrow": "DSA • Interactive learning series • 16",
+    "desc": "Move disks between three rods and discover the recursive pattern.",
+    "chapterId": 5,
+    "chapterTitle": "5. Mathematical Concepts for Algorithms",
+    "chapterIcon": "🔢",
+    "category": "Math",
+    "tags": [
+      "Tower of Hanoi",
+      "2ⁿ-1 Moves",
+      "Recursion",
+      "Classic Puzzle"
+    ]
+  },
+  {
+    "num": 17,
+    "file": "dsa_euclidean_gcd_simulator.html",
+    "title": "DSA Simulator 17 — Euclidean GCD",
+    "h1": "Euclidean Algorithm for GCD",
+    "eyebrow": "DSA • Interactive learning series • 17",
+    "desc": "Find the greatest common divisor by repeatedly using remainders.",
+    "chapterId": 5,
+    "chapterTitle": "5. Mathematical Concepts for Algorithms",
+    "chapterIcon": "🔢",
+    "category": "Math",
+    "tags": [
+      "Euclidean GCD",
+      "Greatest Common Divisor",
+      "Modulo",
+      "Logarithmic"
+    ]
+  },
+  {
+    "num": 18,
+    "file": "dsa_substitution_method_simulator.html",
+    "title": "DSA Simulator 18 — Recurrence Substitution Method",
+    "h1": "Recurrence Solving: Substitution Method",
+    "eyebrow": "DSA • Interactive learning series • 18",
+    "desc": "Guess a bound, expand the recurrence, and use induction to prove it.",
+    "chapterId": 6,
+    "chapterTitle": "6. Methods to Solve Recurrence Relations",
+    "chapterIcon": "🌲",
+    "category": "Recurrence",
+    "tags": [
+      "Substitution Method",
+      "Mathematical Induction",
+      "Recurrences",
+      "Guess & Verify"
+    ]
+  },
+  {
+    "num": 19,
+    "file": "dsa_recursion_tree_simulator.html",
+    "title": "DSA Simulator 19 — Recursion Tree Method",
+    "h1": "Recursion Tree Method",
+    "eyebrow": "DSA • Interactive learning series • 19",
+    "desc": "Break a recurrence into levels, count the work at each level, then add it all up.",
+    "chapterId": 6,
+    "chapterTitle": "6. Methods to Solve Recurrence Relations",
+    "chapterIcon": "🌲",
+    "category": "Recurrence",
+    "tags": [
+      "Recursion Tree",
+      "Per-level Cost",
+      "D&C Recurrences",
+      "Tree Depth"
+    ]
+  },
+  {
+    "num": 20,
+    "file": "dsa_master_theorem_simulator.html",
+    "title": "DSA Simulator 20 — Master Theorem",
+    "h1": "Master Theorem",
+    "eyebrow": "DSA • Interactive learning series • 20",
+    "desc": "Quickly solve many divide-and-conquer recurrences using three cases.",
+    "chapterId": 6,
+    "chapterTitle": "6. Methods to Solve Recurrence Relations",
+    "chapterIcon": "🌲",
+    "category": "Recurrence",
+    "tags": [
+      "Master Theorem",
+      "3 Cases",
+      "D&C Formula",
+      "Recurrence Shortcut"
+    ]
+  },
+  {
+    "num": 21,
+    "file": "dsa_change_of_variables_simulator.html",
+    "title": "DSA Simulator 21 — Change of Variables",
+    "h1": "Change of Variables Method",
+    "eyebrow": "DSA • Interactive learning series • 21",
+    "desc": "Transform a difficult recurrence into a simpler one by substituting a new variable.",
+    "chapterId": 6,
+    "chapterTitle": "6. Methods to Solve Recurrence Relations",
+    "chapterIcon": "🌲",
+    "category": "Recurrence",
+    "tags": [
+      "Change of Variables",
+      "Log Substitution",
+      "Recurrences",
+      "Transformation"
+    ]
+  },
+  {
+    "num": 22,
+    "file": "dsa_generating_functions_simulator.html",
+    "title": "DSA Simulator 22 — Generating Functions",
+    "h1": "Generating Functions",
+    "eyebrow": "DSA • Interactive learning series • 22",
+    "desc": "Turn a sequence into a power series so patterns and recurrence relations become easier to study.",
+    "chapterId": 6,
+    "chapterTitle": "6. Methods to Solve Recurrence Relations",
+    "chapterIcon": "🌲",
+    "category": "Recurrence",
+    "tags": [
+      "Generating Functions",
+      "Power Series",
+      "Closed Form",
+      "Recurrence Solving"
+    ]
+  },
+  {
+    "num": 23,
+    "file": "dsa_merge_sort_simulator.html",
+    "title": "DSA Simulator 23 — Merge Sort",
+    "h1": "Merge Sort",
+    "eyebrow": "DSA • Interactive learning series • 23",
+    "desc": "Watch divide and conquer in action: split an array, sort each half, then merge the halves.",
+    "chapterId": 7,
+    "chapterTitle": "7. Sorting & Searching Algorithms",
+    "chapterIcon": "🔍",
+    "category": "Sorting & Searching",
+    "tags": [
+      "Merge Sort",
+      "Divide & Conquer",
+      "O(n log n)",
+      "Stable Sort"
+    ]
+  },
+  {
+    "num": 24,
+    "file": "dsa_quick_sort_simulator.html",
+    "title": "DSA Simulator 24 — Quick Sort",
+    "h1": "Quick Sort",
+    "eyebrow": "DSA • Interactive learning series • 24",
+    "desc": "Choose a pivot, partition the array, then sort the smaller sections recursively.",
+    "chapterId": 7,
+    "chapterTitle": "7. Sorting & Searching Algorithms",
+    "chapterIcon": "🔍",
+    "category": "Sorting & Searching",
+    "tags": [
+      "Quick Sort",
+      "Pivot Partitioning",
+      "O(n log n)",
+      "In-Place"
+    ]
+  },
+  {
+    "num": 25,
+    "file": "dsa_median_of_medians_simulator.html",
+    "title": "DSA Simulator 25 — Median of Medians",
+    "h1": "Median of Medians",
+    "eyebrow": "DSA • Interactive learning series • 25",
+    "desc": "A deterministic selection algorithm for finding the k-th smallest element in worst-case linear time.",
+    "chapterId": 7,
+    "chapterTitle": "7. Sorting & Searching Algorithms",
+    "chapterIcon": "🔍",
+    "category": "Sorting & Searching",
+    "tags": [
+      "Median of Medians",
+      "Linear Selection",
+      "Worst-case O(n)",
+      "Group of 5"
+    ]
+  },
+  {
+    "num": 26,
+    "file": "dsa_kth_smallest_simulator.html",
+    "title": "DSA Simulator 26 — K-th Smallest Element",
+    "h1": "Finding the k-th Smallest Element",
+    "eyebrow": "DSA • Interactive learning series • 26",
+    "desc": "Learn how sorting, Quickselect, and Median of Medians can find a rank in an array.",
+    "chapterId": 7,
+    "chapterTitle": "7. Sorting & Searching Algorithms",
+    "chapterIcon": "🔍",
+    "category": "Sorting & Searching",
+    "tags": [
+      "k-th Element",
+      "QuickSelect",
+      "Order Statistics",
+      "Selection"
+    ]
+  },
+  {
+    "num": 27,
+    "file": "dsa_linear_search_simulator.html",
+    "title": "DSA Simulator 27 — Linear Search",
+    "h1": "Linear Search",
+    "eyebrow": "DSA • Interactive learning series • 27",
+    "desc": "Check each element one by one until the target is found or the array ends.",
+    "chapterId": 7,
+    "chapterTitle": "7. Sorting & Searching Algorithms",
+    "chapterIcon": "🔍",
+    "category": "Sorting & Searching",
+    "tags": [
+      "Linear Search",
+      "Sequential Scan",
+      "O(n)",
+      "Unsorted Data"
+    ]
+  },
+  {
+    "num": 28,
+    "file": "dsa_binary_search_simulator.html",
+    "title": "DSA Simulator 28 — Binary Search",
+    "h1": "Binary Search (Iterative)",
+    "eyebrow": "DSA • Interactive learning series • 28",
+    "desc": "Find a target in a sorted array by repeatedly cutting the search range in half.",
+    "chapterId": 7,
+    "chapterTitle": "7. Sorting & Searching Algorithms",
+    "chapterIcon": "🔍",
+    "category": "Sorting & Searching",
+    "tags": [
+      "Binary Search",
+      "Iterative Search",
+      "O(log n)",
+      "Sorted Array"
+    ]
+  },
+  {
+    "num": 29,
+    "file": "dsa_recursive_binary_search_simulator.html",
+    "title": "DSA Simulator 29 — Recursive Binary Search",
+    "h1": "Recursive Binary Search",
+    "eyebrow": "DSA • Interactive learning series • 29",
+    "desc": "The same divide-in-half strategy, implemented using a function that calls itself.",
+    "chapterId": 7,
+    "chapterTitle": "7. Sorting & Searching Algorithms",
+    "chapterIcon": "🔍",
+    "category": "Sorting & Searching",
+    "tags": [
+      "Recursive Binary Search",
+      "Divide & Conquer",
+      "O(log n)",
+      "Recurrence"
+    ]
+  },
+  {
+    "num": 30,
+    "file": "dsa_strassen_matrix_multiplication_simulator.html",
+    "title": "DSA Simulator 30 — Strassen Matrix Multiplication",
+    "h1": "Strassen Matrix Multiplication",
+    "eyebrow": "",
+    "desc": "Multiply two matrices using 7 recursive multiplications instead of 8.",
+    "chapterId": 8,
+    "chapterTitle": "8. Strassen's Matrix Multiplication",
+    "chapterIcon": "🧮",
+    "category": "Divide & Conquer",
+    "tags": [
+      "Strassen Matrix",
+      "7 Multiplications",
+      "O(n^2.807)",
+      "Divide & Conquer"
+    ]
+  },
+  {
+    "num": 31,
+    "file": "dsa_binary_trees_simulator.html",
+    "title": "DSA Simulator 31 — Binary Trees",
+    "h1": "Binary Trees",
+    "eyebrow": "",
+    "desc": "Learn nodes, edges, root, leaves, height, and common binary-tree types.",
+    "chapterId": 9,
+    "chapterTitle": "9. Trees & Priority Queues",
+    "chapterIcon": "🌿",
+    "category": "Trees",
+    "tags": [
+      "Binary Trees",
+      "Traversals",
+      "Inorder / Preorder",
+      "Hierarchy"
+    ]
+  },
+  {
+    "num": 32,
+    "file": "dsa_binary_tree_types_simulator.html",
+    "title": "DSA Simulator 32 — Binary Tree Types",
+    "h1": "Strict, Complete & Full Binary Trees",
+    "eyebrow": "",
+    "desc": "Compare the shapes and test whether each tree follows the definition.",
+    "chapterId": 9,
+    "chapterTitle": "9. Trees & Priority Queues",
+    "chapterIcon": "🌿",
+    "category": "Trees",
+    "tags": [
+      "Binary Tree Types",
+      "Strict",
+      "Complete",
+      "Full Tree"
+    ]
+  },
+  {
+    "num": 33,
+    "file": "dsa_priority_queue_dictionary_simulator.html",
+    "title": "DSA Simulator 33 — Priority Queue and Dictionary",
+    "h1": "Priority Queues & Dictionaries",
+    "eyebrow": "",
+    "desc": "A priority queue serves by priority; a dictionary looks up values by key.",
+    "chapterId": 9,
+    "chapterTitle": "9. Trees & Priority Queues",
+    "chapterIcon": "🌿",
+    "category": "Trees",
+    "tags": [
+      "Priority Queue",
+      "Dictionary ADT",
+      "Key-Value",
+      "Associative"
+    ]
+  },
+  {
+    "num": 34,
+    "file": "dsa_min_max_heap_simulator.html",
+    "title": "DSA Simulator 34 — Min Heap and Max Heap",
+    "h1": "Min-Heap & Max-Heap",
+    "eyebrow": "",
+    "desc": "A heap is a complete binary tree that keeps its highest- or lowest-priority value at the root.",
+    "chapterId": 10,
+    "chapterTitle": "10. Heaps",
+    "chapterIcon": "🏔️",
+    "category": "Heaps",
+    "tags": [
+      "Min-Heap",
+      "Max-Heap",
+      "Heap Property",
+      "Parent-Child"
+    ]
+  },
+  {
+    "num": 35,
+    "file": "dsa_heap_construction_simulator.html",
+    "title": "DSA Simulator 35 — Heap Construction",
+    "h1": "Heap Insertion, Deletion & Construction",
+    "eyebrow": "",
+    "desc": "Compare top-down insertion with bottom-up heap building.",
+    "chapterId": 10,
+    "chapterTitle": "10. Heaps",
+    "chapterIcon": "🏔️",
+    "category": "Heaps",
+    "tags": [
+      "Heap Construction",
+      "Top-Down",
+      "Bottom-Up",
+      "Heapify O(n)"
+    ]
+  },
+  {
+    "num": 36,
+    "file": "dsa_heap_sort_simulator.html",
+    "title": "DSA Simulator 36 — Heap Sort",
+    "h1": "Heap Sort",
+    "eyebrow": "",
+    "desc": "Turn an array into a max-heap, then repeatedly move the maximum to the end.",
+    "chapterId": 10,
+    "chapterTitle": "10. Heaps",
+    "chapterIcon": "🏔️",
+    "category": "Heaps",
+    "tags": [
+      "Heap Sort",
+      "In-Place Sort",
+      "O(n log n)",
+      "Max-Heapify"
+    ]
+  },
+  {
+    "num": 37,
+    "file": "dsa_graph_representations_simulator.html",
+    "title": "DSA Simulator 37 — Graph Representations",
+    "h1": "Graph Representations",
+    "eyebrow": "",
+    "desc": "Represent the same graph using an adjacency matrix or an adjacency list.",
+    "chapterId": 11,
+    "chapterTitle": "11. Graph Representation",
+    "chapterIcon": "🕸️",
+    "category": "Graphs",
+    "tags": [
+      "Adjacency Matrix",
+      "Adjacency List",
+      "Graph Storage",
+      "Memory Tradeoff"
+    ]
+  },
+  {
+    "num": 38,
+    "file": "dsa_sparse_dense_graphs_simulator.html",
+    "title": "DSA Simulator 38 — Sparse and Dense Graphs",
+    "h1": "Sparse and Dense Graphs",
+    "eyebrow": "",
+    "desc": "Understand how the number of edges affects graph storage and algorithm choices.",
+    "chapterId": 11,
+    "chapterTitle": "11. Graph Representation",
+    "chapterIcon": "🕸️",
+    "category": "Graphs",
+    "tags": [
+      "Sparse Graphs",
+      "Dense Graphs",
+      "Edge Density",
+      "Representation"
+    ]
+  },
+  {
+    "num": 39,
+    "file": "dsa_dijkstra_algorithm_simulator.html",
+    "title": "DSA Simulator 39 — Dijkstra's Algorithm",
+    "h1": "Dijkstra's Shortest-Path Algorithm",
+    "eyebrow": "",
+    "desc": "Find shortest distances from one source in a graph with non-negative edge weights.",
+    "chapterId": 12,
+    "chapterTitle": "12. Greedy Method",
+    "chapterIcon": "💎",
+    "category": "Greedy",
+    "tags": [
+      "Dijkstra",
+      "Single-Source Shortest Path",
+      "Greedy",
+      "Non-negative"
+    ]
+  },
+  {
+    "num": 40,
+    "file": "dsa_bellman_ford_algorithm_simulator.html",
+    "title": "DSA Simulator 40 — Bellman-Ford",
+    "h1": "Bellman–Ford Algorithm",
+    "eyebrow": "",
+    "desc": "Shortest paths even when edges have negative weights — and a way to detect reachable negative cycles.",
+    "chapterId": 12,
+    "chapterTitle": "12. Greedy Method",
+    "chapterIcon": "💎",
+    "category": "Greedy",
+    "tags": [
+      "Bellman-Ford",
+      "Negative Weights",
+      "Relaxation",
+      "Dynamic Programming"
+    ]
+  },
+  {
+    "num": 41,
+    "file": "dsa_kruskal_mst_simulator.html",
+    "title": "DSA Simulator 41 — Kruskal's Algorithm",
+    "h1": "Minimum Spanning Tree: Kruskal’s Algorithm",
+    "eyebrow": "",
+    "desc": "Connect every vertex at minimum total cost without creating a cycle.",
+    "chapterId": 12,
+    "chapterTitle": "12. Greedy Method",
+    "chapterIcon": "💎",
+    "category": "Greedy",
+    "tags": [
+      "Kruskal's MST",
+      "Disjoint Set (Union-Find)",
+      "Greedy",
+      "Cycle Check"
+    ]
+  },
+  {
+    "num": 42,
+    "file": "dsa_prim_mst_simulator.html",
+    "title": "DSA Simulator 42 — Prim's Algorithm",
+    "h1": "Prim’s Minimum Spanning Tree Algorithm",
+    "eyebrow": "",
+    "desc": "Grow one connected tree by repeatedly adding the cheapest edge leaving it.",
+    "chapterId": 12,
+    "chapterTitle": "12. Greedy Method",
+    "chapterIcon": "💎",
+    "category": "Greedy",
+    "tags": [
+      "Prim's MST",
+      "Cut Property",
+      "Greedy",
+      "Growing Tree"
+    ]
+  },
+  {
+    "num": 43,
+    "file": "dsa_huffman_coding_simulator.html",
+    "title": "DSA Simulator 43 — Huffman Coding",
+    "h1": "Huffman Coding",
+    "eyebrow": "",
+    "desc": "Compress data by giving frequent symbols shorter binary codes.",
+    "chapterId": 12,
+    "chapterTitle": "12. Greedy Method",
+    "chapterIcon": "💎",
+    "category": "Greedy",
+    "tags": [
+      "Huffman Coding",
+      "Data Compression",
+      "Greedy",
+      "Prefix Tree"
+    ]
+  },
+  {
+    "num": 44,
+    "file": "dsa_job_scheduling_deadlines_simulator.html",
+    "title": "DSA Simulator 44 — Job Scheduling with Deadlines",
+    "h1": "Job Scheduling with Deadlines",
+    "eyebrow": "",
+    "desc": "A greedy strategy to choose profitable jobs that finish before their deadlines.",
+    "chapterId": 12,
+    "chapterTitle": "12. Greedy Method",
+    "chapterIcon": "💎",
+    "category": "Greedy",
+    "tags": [
+      "Job Scheduling",
+      "Deadlines & Profits",
+      "Greedy Choice",
+      "Disjoint Slots"
+    ]
+  },
+  {
+    "num": 45,
+    "file": "dsa_matrix_chain_multiplication_simulator.html",
+    "title": "DSA Simulator 45 — Matrix Chain Multiplication",
+    "h1": "Matrix Chain Multiplication",
+    "eyebrow": "",
+    "desc": "Choose the best parenthesization to minimize scalar multiplications using dynamic programming.",
+    "chapterId": 13,
+    "chapterTitle": "13. Dynamic Programming",
+    "chapterIcon": "🧩",
+    "category": "Dynamic Programming",
+    "tags": [
+      "Matrix Chain",
+      "Dynamic Programming",
+      "Optimal Parenthesization",
+      "O(n³)"
+    ]
+  },
+  {
+    "num": 46,
+    "file": "dsa_binary_search_tree_simulator.html",
+    "title": "DSA Simulator 46 — Binary Search Tree",
+    "h1": "Binary Search Tree (BST)",
+    "eyebrow": "",
+    "desc": "Insert values, search for a value, and explore inorder traversal.",
+    "chapterId": 14,
+    "chapterTitle": "14. BST & Advanced DP / Graphs",
+    "chapterIcon": "⚡",
+    "category": "Advanced Algorithms",
+    "tags": [
+      "Binary Search Tree",
+      "BST Insertion",
+      "BST Deletion",
+      "BST Inorder"
+    ]
+  },
+  {
+    "num": 47,
+    "file": "dsa_lcs_simulator.html",
+    "title": "DSA Simulator 47 — Longest Common Subsequence",
+    "h1": "Longest Common Subsequence (LCS)",
+    "eyebrow": "",
+    "desc": "Find the longest sequence shared by two strings without changing character order.",
+    "chapterId": 14,
+    "chapterTitle": "14. BST & Advanced DP / Graphs",
+    "chapterIcon": "⚡",
+    "category": "Advanced Algorithms",
+    "tags": [
+      "LCS",
+      "Longest Common Subsequence",
+      "Dynamic Programming",
+      "2D DP Table"
+    ]
+  },
+  {
+    "num": 48,
+    "file": "dsa_knapsack_simulator.html",
+    "title": "DSA Simulator 48 — Knapsack",
+    "h1": "Knapsack: Fractional vs. 0/1",
+    "eyebrow": "",
+    "desc": "Choose items to maximize value without exceeding the bag’s capacity.",
+    "chapterId": 14,
+    "chapterTitle": "14. BST & Advanced DP / Graphs",
+    "chapterIcon": "⚡",
+    "category": "Advanced Algorithms",
+    "tags": [
+      "Knapsack",
+      "Fractional vs 0/1",
+      "Greedy vs DP",
+      "Value-Weight Ratio"
+    ]
+  },
+  {
+    "num": 49,
+    "file": "dsa_floyd_warshall_simulator.html",
+    "title": "DSA Simulator 49 — Floyd–Warshall",
+    "h1": "Floyd–Warshall Algorithm",
+    "eyebrow": "",
+    "desc": "Find shortest distances between every pair of vertices using dynamic programming.",
+    "chapterId": 14,
+    "chapterTitle": "14. BST & Advanced DP / Graphs",
+    "chapterIcon": "⚡",
+    "category": "Advanced Algorithms",
+    "tags": [
+      "Floyd-Warshall",
+      "All-Pairs Shortest Path",
+      "DP Triple Loop",
+      "O(V³)"
+    ]
+  },
+  {
+    "num": 50,
+    "file": "dsa_transitive_closure_simulator.html",
+    "title": "DSA Simulator 50 — Transitive Closure",
+    "h1": "Transitive Closure of a Directed Graph",
+    "eyebrow": "",
+    "desc": "Find out whether each vertex can reach every other vertex, using Warshall’s algorithm.",
+    "chapterId": 14,
+    "chapterTitle": "14. BST & Advanced DP / Graphs",
+    "chapterIcon": "⚡",
+    "category": "Advanced Algorithms",
+    "tags": [
+      "Transitive Closure",
+      "Warshall's Algorithm",
+      "Reachability Matrix",
+      "Bitwise OR"
+    ]
+  },
+  {
+    "num": 51,
+    "file": "dsa_bfs_simulator.html",
+    "title": "DSA Simulator 51 — Breadth-First Search",
+    "h1": "Breadth-First Search (BFS)",
+    "eyebrow": "",
+    "desc": "Explore a graph level by level using a queue.",
+    "chapterId": 15,
+    "chapterTitle": "15. Graph Traversal Algorithms",
+    "chapterIcon": "🗺️",
+    "category": "Graphs",
+    "tags": [
+      "BFS",
+      "Breadth-First Search",
+      "Queue FIFO",
+      "Level Order"
+    ]
+  },
+  {
+    "num": 52,
+    "file": "dsa_dfs_simulator.html",
+    "title": "DSA Simulator 52 — Depth-First Search",
+    "h1": "Depth-First Search (DFS)",
+    "eyebrow": "",
+    "desc": "Follow one path as deeply as possible, then backtrack.",
+    "chapterId": 15,
+    "chapterTitle": "15. Graph Traversal Algorithms",
+    "chapterIcon": "🗺️",
+    "category": "Graphs",
+    "tags": [
+      "DFS",
+      "Depth-First Search",
+      "Stack LIFO",
+      "Recursion Exploration"
+    ]
+  },
+  {
+    "num": 53,
+    "file": "dsa_edge_classification_simulator.html",
+    "title": "DSA Simulator 53 — Graph Edge Classification",
+    "h1": "Graph Edge Classification",
+    "eyebrow": "",
+    "desc": "Understand tree edges, back edges, forward edges, and cross edges in DFS.",
+    "chapterId": 15,
+    "chapterTitle": "15. Graph Traversal Algorithms",
+    "chapterIcon": "🗺️",
+    "category": "Graphs",
+    "tags": [
+      "Edge Classification",
+      "Tree Edges",
+      "Back Edges",
+      "Cross & Forward"
+    ]
+  },
+  {
+    "num": 54,
+    "file": "dsa_directed_cycle_detection_simulator.html",
+    "title": "DSA Simulator 54 — Directed Cycle Detection",
+    "h1": "Cycle Detection in Directed Graphs",
+    "eyebrow": "",
+    "desc": "Detect a directed cycle using DFS and the recursion stack.",
+    "chapterId": 15,
+    "chapterTitle": "15. Graph Traversal Algorithms",
+    "chapterIcon": "🗺️",
+    "category": "Graphs",
+    "tags": [
+      "Cycle Detection",
+      "Directed Graph",
+      "Back Edge Check",
+      "Visited / Active"
+    ]
+  },
+  {
+    "num": 55,
+    "file": "dsa_connected_components_simulator.html",
+    "title": "DSA Simulator 55 — Connected Components",
+    "h1": "Connected Components in Undirected Graphs",
+    "eyebrow": "",
+    "desc": "Find separate groups of vertices using BFS or DFS.",
+    "chapterId": 15,
+    "chapterTitle": "15. Graph Traversal Algorithms",
+    "chapterIcon": "🗺️",
+    "category": "Graphs",
+    "tags": [
+      "Connected Components",
+      "Undirected Graph",
+      "BFS/DFS Reachability",
+      "Subgraphs"
+    ]
+  },
+  {
+    "num": 56,
+    "file": "dsa_biconnected_components_simulator.html",
+    "title": "DSA Simulator 56 — Biconnected Components",
+    "h1": "Biconnected Components & Articulation Points",
+    "eyebrow": "",
+    "desc": "Discover which vertices can disconnect a graph when removed.",
+    "chapterId": 15,
+    "chapterTitle": "15. Graph Traversal Algorithms",
+    "chapterIcon": "🗺️",
+    "category": "Graphs",
+    "tags": [
+      "Biconnected Components",
+      "Articulation Points",
+      "Discovery/Low Time",
+      "Tarjan"
+    ]
+  },
+  {
+    "num": 57,
+    "file": "dsa_strongly_connected_components_simulator.html",
+    "title": "DSA Simulator 57 — Strongly Connected Components",
+    "h1": "Strongly Connected Components (SCCs)",
+    "eyebrow": "",
+    "desc": "Find groups of vertices that can all reach one another in a directed graph.",
+    "chapterId": 15,
+    "chapterTitle": "15. Graph Traversal Algorithms",
+    "chapterIcon": "🗺️",
+    "category": "Graphs",
+    "tags": [
+      "Strongly Connected Components",
+      "Kosaraju / Tarjan",
+      "Transpose Graph",
+      "Mutual Reachability"
+    ]
+  },
+  {
+    "num": 58,
+    "file": "dsa_bfs_dfs_review_simulator.html",
+    "title": "DSA Simulator 58 — Graph Traversal Review",
+    "h1": "BFS vs DFS: Graph Traversal Review",
+    "eyebrow": "",
+    "desc": "Compare level-by-level exploration with depth-first exploration.",
+    "chapterId": 15,
+    "chapterTitle": "15. Graph Traversal Algorithms",
+    "chapterIcon": "🗺️",
+    "category": "Graphs",
+    "tags": [
+      "BFS vs DFS",
+      "Traversal Comparison",
+      "Queue vs Stack",
+      "Edge Exploration"
+    ]
+  },
+  {
+    "num": 59,
+    "file": "dsa_bubble_sort_simulator.html",
+    "title": "DSA Simulator 59 — Bubble Sort",
+    "h1": "Bubble Sort",
+    "eyebrow": "",
+    "desc": "Sort numbers by repeatedly comparing adjacent elements and swapping them if needed.",
+    "chapterId": 16,
+    "chapterTitle": "16. Sorting Techniques",
+    "chapterIcon": "📊",
+    "category": "Sorting",
+    "tags": [
+      "Bubble Sort",
+      "Adjacent Swaps",
+      "O(n²)",
+      "Stable Sort"
+    ]
+  },
+  {
+    "num": 60,
+    "file": "dsa_selection_sort_simulator.html",
+    "title": "DSA Simulator 60 — Selection Sort",
+    "h1": "Selection Sort",
+    "eyebrow": "",
+    "desc": "Find the smallest remaining element and place it in the next sorted position.",
+    "chapterId": 16,
+    "chapterTitle": "16. Sorting Techniques",
+    "chapterIcon": "📊",
+    "category": "Sorting",
+    "tags": [
+      "Selection Sort",
+      "Minimum Finding",
+      "O(n²)",
+      "In-Place"
+    ]
+  },
+  {
+    "num": 61,
+    "file": "dsa_insertion_sort_simulator.html",
+    "title": "DSA Simulator 61 — Insertion Sort",
+    "h1": "Insertion Sort",
+    "eyebrow": "",
+    "desc": "Build a sorted section by inserting each new element into its correct place.",
+    "chapterId": 16,
+    "chapterTitle": "16. Sorting Techniques",
+    "chapterIcon": "📊",
+    "category": "Sorting",
+    "tags": [
+      "Insertion Sort",
+      "Card Sorter",
+      "O(n²)",
+      "Adaptive & Online"
+    ]
+  },
+  {
+    "num": 62,
+    "file": "dsa_counting_sort_simulator.html",
+    "title": "DSA Simulator 62 — Counting Sort",
+    "h1": "Counting Sort",
+    "eyebrow": "",
+    "desc": "Sort small-range integers by counting how often each value appears.",
+    "chapterId": 16,
+    "chapterTitle": "16. Sorting Techniques",
+    "chapterIcon": "📊",
+    "category": "Sorting",
+    "tags": [
+      "Counting Sort",
+      "Non-Comparison Sort",
+      "O(n+k)",
+      "Frequency Array"
+    ]
+  },
+  {
+    "num": 63,
+    "file": "dsa_radix_sort_simulator.html",
+    "title": "DSA Simulator 63 — Radix Sort",
+    "h1": "Radix Sort",
+    "eyebrow": "",
+    "desc": "Sort numbers digit by digit, starting with the least significant digit.",
+    "chapterId": 16,
+    "chapterTitle": "16. Sorting Techniques",
+    "chapterIcon": "📊",
+    "category": "Sorting",
+    "tags": [
+      "Radix Sort",
+      "LSD Multi-pass",
+      "O(d·(n+k))",
+      "Digit Bucketing"
+    ]
+  }
+];
+    const CHAPTERS = [
+  {
+    "id": 1,
+    "title": "1. Asymptotic Notations",
+    "icon": "📐",
+    "range": [
+      1,
+      6
+    ],
+    "count": 6,
+    "desc": "Mathematical bounds and growth rates: Big-O, Omega, Theta, and strict bounds."
+  },
+  {
+    "id": 2,
+    "title": "2. Properties / Rules",
+    "icon": "⚖️",
+    "range": [
+      7,
+      10
+    ],
+    "count": 4,
+    "desc": "Fundamental algebraic and relational properties of asymptotic notations."
+  },
+  {
+    "id": 3,
+    "title": "3. Algorithm Analysis",
+    "icon": "⏱️",
+    "range": [
+      11,
+      12
+    ],
+    "count": 2,
+    "desc": "Foundational principles for analyzing execution time and auxiliary space consumption."
+  },
+  {
+    "id": 4,
+    "title": "4. Loops & Recursion",
+    "icon": "🔄",
+    "range": [
+      13,
+      14
+    ],
+    "count": 2,
+    "desc": "Loop iterations, nested loop dependencies, and call stack control flows."
+  },
+  {
+    "id": 5,
+    "title": "5. Mathematical Concepts for Algorithms",
+    "icon": "🔢",
+    "range": [
+      15,
+      17
+    ],
+    "count": 3,
+    "desc": "Series summation, recursive moves, and number theory for algorithmic bounds."
+  },
+  {
+    "id": 6,
+    "title": "6. Methods to Solve Recurrence Relations",
+    "icon": "🌲",
+    "range": [
+      18,
+      22
+    ],
+    "count": 5,
+    "desc": "Core analytical techniques to solve divide-and-conquer recurrences."
+  },
+  {
+    "id": 7,
+    "title": "7. Sorting & Searching Algorithms",
+    "icon": "🔍",
+    "range": [
+      23,
+      29
+    ],
+    "count": 7,
+    "desc": "Fundamental comparison sorts, linear order statistics, and binary searching."
+  },
+  {
+    "id": 8,
+    "title": "8. Strassen's Matrix Multiplication",
+    "icon": "🧮",
+    "range": [
+      30,
+      30
+    ],
+    "count": 1,
+    "desc": "Sub-cubic matrix multiplication via recursive divide-and-conquer algebra."
+  },
+  {
+    "id": 9,
+    "title": "9. Trees & Priority Queues",
+    "icon": "🌿",
+    "range": [
+      31,
+      33
+    ],
+    "count": 3,
+    "desc": "Tree structures, structural classifications, and dictionary abstract data types."
+  },
+  {
+    "id": 10,
+    "title": "10. Heaps",
+    "icon": "🏔️",
+    "range": [
+      34,
+      36
+    ],
+    "count": 3,
+    "desc": "Binary heap invariants, bottom-up and top-down heapification, and Heap Sort."
+  },
+  {
+    "id": 11,
+    "title": "11. Graph Representation",
+    "icon": "🕸️",
+    "range": [
+      37,
+      38
+    ],
+    "count": 2,
+    "desc": "Graph storage tradeoffs: Adjacency Lists, Adjacency Matrices, and sparsity."
+  },
+  {
+    "id": 12,
+    "title": "12. Greedy Method",
+    "icon": "💎",
+    "range": [
+      39,
+      44
+    ],
+    "count": 6,
+    "desc": "Locally optimal decision making: Shortest paths, MSTs, Huffman codes, and scheduling."
+  },
+  {
+    "id": 13,
+    "title": "13. Dynamic Programming",
+    "icon": "🧩",
+    "range": [
+      45,
+      45
+    ],
+    "count": 1,
+    "desc": "Overlapping subproblems and optimal substructure applied to matrix chain evaluation."
+  },
+  {
+    "id": 14,
+    "title": "14. BST & Advanced DP / Graphs",
+    "icon": "⚡",
+    "range": [
+      46,
+      50
+    ],
+    "count": 5,
+    "desc": "Binary search trees, 2D dynamic programming tables, and all-pairs shortest paths."
+  },
+  {
+    "id": 15,
+    "title": "15. Graph Traversal Algorithms",
+    "icon": "🗺️",
+    "range": [
+      51,
+      58
+    ],
+    "count": 8,
+    "desc": "Systematic graph exploration: BFS, DFS, edge classification, cycles, and connectivity."
+  },
+  {
+    "id": 16,
+    "title": "16. Sorting Techniques",
+    "icon": "📊",
+    "range": [
+      59,
+      63
+    ],
+    "count": 5,
+    "desc": "Elementary quadratic sorts alongside high-speed non-comparison linear-time sorts."
+  }
+];
+
+    // State
+    let currentFilter = 'all';
+    let searchQuery = '';
+    let currentView = 'grouped'; // 'grouped' or 'grid'
+    let currentModalIndex = 0;
+    let allExpanded = true;
+
+    // LocalStorage Keys
+    const LS_FAVS = 'dsa_sim_favs_v1';
+    const LS_DONE = 'dsa_sim_done_v1';
+    const LS_THEME = 'dsa_sim_theme_v1';
+
+    let favorites = new Set(JSON.parse(localStorage.getItem(LS_FAVS) || '[]'));
+    let completed = new Set(JSON.parse(localStorage.getItem(LS_DONE) || '[]'));
+
+    // DOM Elements
+    const searchInput = document.getElementById('searchInput');
+    const clearSearchBtn = document.getElementById('clearSearchBtn');
+    const groupedView = document.getElementById('groupedView');
+    const flatGridView = document.getElementById('flatGridView');
+    const emptyState = document.getElementById('emptyState');
+    const resultsCount = document.getElementById('resultsCount');
+    const viewGroupedBtn = document.getElementById('viewGroupedBtn');
+    const viewGridBtn = document.getElementById('viewGridBtn');
+    const filterPills = document.querySelectorAll('.pill');
+    const resetFilterBtn = document.getElementById('resetFilterBtn');
+    const randomBtn = document.getElementById('randomBtn');
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon = document.getElementById('themeIcon');
+    const completedStatCount = document.getElementById('completedStatCount');
+    const starredStatCount = document.getElementById('starredStatCount');
+    const pillStarredCount = document.getElementById('pillStarredCount');
+    const pillDoneCount = document.getElementById('pillDoneCount');
+    const progressPercentage = document.getElementById('progressPercentage');
+    const progressBar = document.getElementById('progressBar');
+    const expandCollapseAllBtn = document.getElementById('expandCollapseAllBtn');
+
+    // Modal Elements
+    const previewModal = document.getElementById('previewModal');
+    const modalIframe = document.getElementById('modalIframe');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalBadgeNum = document.getElementById('modalBadgeNum');
+    const modalExternalLink = document.getElementById('modalExternalLink');
+    const modalCloseBtn = document.getElementById('modalCloseBtn');
+    const modalPrevBtn = document.getElementById('modalPrevBtn');
+    const modalNextBtn = document.getElementById('modalNextBtn');
+
+    // Theme Management
+    function initTheme() {
+      const savedTheme = localStorage.getItem(LS_THEME) || 'dark';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+      themeIcon.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
+    }
+    themeToggle.addEventListener('click', () => {
+      const current = document.documentElement.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem(LS_THEME, next);
+      themeIcon.textContent = next === 'dark' ? '☀️' : '🌙';
+    });
+
+    // Storage updates
+    function toggleFavorite(num) {
+      if (favorites.has(num)) favorites.delete(num);
+      else favorites.add(num);
+      localStorage.setItem(LS_FAVS, JSON.stringify([...favorites]));
+      updateStats();
+      render();
+    }
+
+    function toggleCompleted(num) {
+      if (completed.has(num)) completed.delete(num);
+      else completed.add(num);
+      localStorage.setItem(LS_DONE, JSON.stringify([...completed]));
+      updateStats();
+      render();
+    }
+
+    function updateStats() {
+      const favCount = favorites.size;
+      const doneCount = completed.size;
+      const total = SIMULATORS.length;
+      const pct = Math.round((doneCount / total) * 100);
+
+      starredStatCount.textContent = favCount;
+      completedStatCount.textContent = `${doneCount} / ${total}`;
+      pillStarredCount.textContent = favCount;
+      pillDoneCount.textContent = doneCount;
+      progressPercentage.textContent = `${pct}% Completed (${doneCount}/${total})`;
+      progressBar.style.width = `${pct}%`;
+    }
+
+    // Filter Logic
+    function matchesFilter(item) {
+      // 1. Text Search Filter
+      if (searchQuery) {
+        const q = searchQuery.toLowerCase();
+        const numStr = String(item.num);
+        const padNumStr = '#' + String(item.num).padStart(2, '0');
+        const matchText = (
+          item.h1.toLowerCase().includes(q) ||
+          item.title.toLowerCase().includes(q) ||
+          item.desc.toLowerCase().includes(q) ||
+          item.chapterTitle.toLowerCase().includes(q) ||
+          item.tags.some(t => t.toLowerCase().includes(q)) ||
+          numStr === q ||
+          padNumStr.toLowerCase() === q
+        );
+        if (!matchText) return false;
+      }
+
+      // 2. Category / Status Pills
+      if (currentFilter === 'all') return true;
+      if (currentFilter === 'starred') return favorites.has(item.num);
+      if (currentFilter === 'completed') return completed.has(item.num);
+      if (currentFilter.startsWith('cat-')) {
+        const cat = currentFilter.replace('cat-', '');
+        if (cat === 'Graphs') {
+          return item.chapterId === 11 || item.chapterId === 15;
+        }
+        return item.category === cat;
+      }
+
+      return true;
+    }
+
+    // Card HTML Builder
+    function createCardHTML(item) {
+      const isFav = favorites.has(item.num);
+      const isDone = completed.has(item.num);
+      const numPad = '#' + String(item.num).padStart(2, '0');
+
+      return `
+        <article class="sim-card ${isDone ? 'is-completed' : ''}" data-num="${item.num}">
+          <div class="card-top">
+            <div class="card-badges">
+              <span class="badge-num">${numPad}</span>
+              <span class="badge-ch">${item.chapterIcon} Ch ${item.chapterId}</span>
+            </div>
+            <div class="card-quick-actions">
+              <button 
+                class="action-icon-btn ${isFav ? 'active-fav' : ''}" 
+                onclick="toggleFavorite(${item.num})" 
+                title="${isFav ? 'Remove bookmark' : 'Bookmark this topic'}"
+                aria-label="Bookmark"
+              >
+                ${isFav ? '★' : '☆'}
+              </button>
+              <button 
+                class="action-icon-btn ${isDone ? 'active-done' : ''}" 
+                onclick="toggleCompleted(${item.num})" 
+                title="${isDone ? 'Mark as incomplete' : 'Mark as completed'}"
+                aria-label="Mark completed"
+              >
+                ${isDone ? '☑' : '☐'}
+              </button>
+            </div>
+          </div>
+          <h4 class="card-title">${item.h1}</h4>
+          <p class="card-desc">${item.desc}</p>
+          <div class="card-tags">
+            ${item.tags.map(t => `<span class="tag-item">${t}</span>`).join('')}
+          </div>
+          <div class="card-actions">
+            <button class="card-btn" onclick="openPreview(${item.num})">
+              <span>👁️</span>
+              <span>Preview</span>
+            </button>
+            <a href="topics/${item.file}" target="_blank" class="card-btn btn-launch">
+              <span>Launch</span>
+              <span>↗</span>
+            </a>
+          </div>
+        </article>
+      `;
+    }
+
+    // Main Render Function
+    function render() {
+      const filtered = SIMULATORS.filter(matchesFilter);
+      resultsCount.innerHTML = `Showing <strong>${filtered.length}</strong> of ${SIMULATORS.length} simulators`;
+
+      if (filtered.length === 0) {
+        groupedView.style.display = 'none';
+        flatGridView.style.display = 'none';
+        emptyState.style.display = 'block';
+        return;
+      }
+
+      emptyState.style.display = 'none';
+
+      if (currentView === 'grid') {
+        groupedView.style.display = 'none';
+        flatGridView.style.display = 'grid';
+        flatGridView.innerHTML = filtered.map(createCardHTML).join('');
+      } else {
+        flatGridView.style.display = 'none';
+        groupedView.style.display = 'block';
+
+        // Group filtered items by chapter
+        const htmlParts = [];
+        CHAPTERS.forEach(ch => {
+          const chItems = filtered.filter(item => item.chapterId === ch.id);
+          if (chItems.length === 0) return; // skip empty chapters in this filter
+
+          htmlParts.push(`
+            <section class="chapter-section ${allExpanded ? '' : 'collapsed'}" id="chapterSection-${ch.id}">
+              <div class="chapter-header" onclick="toggleChapter(${ch.id})">
+                <div class="chapter-info">
+                  <div class="chapter-icon-badge">${ch.icon}</div>
+                  <div class="chapter-title-group">
+                    <h3>
+                      <span>${ch.title}</span>
+                      <span class="badge-num">${chItems.length} ${chItems.length === 1 ? 'topic' : 'topics'}</span>
+                    </h3>
+                    <div class="chapter-desc">${ch.desc}</div>
+                  </div>
+                </div>
+                <div class="chapter-toggle-btn">▼</div>
+              </div>
+              <div class="simulators-grid">
+                ${chItems.map(createCardHTML).join('')}
+              </div>
+            </section>
+          `);
+        });
+
+        groupedView.innerHTML = htmlParts.join('');
+      }
+    }
+
+    function toggleChapter(id) {
+      const sec = document.getElementById('chapterSection-' + id);
+      if (sec) sec.classList.toggle('collapsed');
+    }
+
+    expandCollapseAllBtn.addEventListener('click', () => {
+      allExpanded = !allExpanded;
+      expandCollapseAllBtn.textContent = allExpanded ? 'Collapse All' : 'Expand All';
+      document.querySelectorAll('.chapter-section').forEach(sec => {
+        if (allExpanded) sec.classList.remove('collapsed');
+        else sec.classList.add('collapsed');
+      });
+    });
+
+    // View Switching
+    viewGroupedBtn.addEventListener('click', () => {
+      currentView = 'grouped';
+      viewGroupedBtn.classList.add('btn-primary');
+      viewGridBtn.classList.remove('btn-primary');
+      expandCollapseAllBtn.style.display = 'inline-block';
+      render();
+    });
+
+    viewGridBtn.addEventListener('click', () => {
+      currentView = 'grid';
+      viewGridBtn.classList.add('btn-primary');
+      viewGroupedBtn.classList.remove('btn-primary');
+      expandCollapseAllBtn.style.display = 'none';
+      render();
+    });
+
+    // Filter Pills Event
+    filterPills.forEach(pill => {
+      pill.addEventListener('click', () => {
+        filterPills.forEach(p => p.classList.remove('active'));
+        pill.classList.add('active');
+        currentFilter = pill.dataset.filter;
+        render();
+      });
+    });
+
+    // Search Input Events
+    ['input', 'keyup', 'search', 'paste'].forEach(evt => {
+      searchInput.addEventListener(evt, (e) => {
+        searchQuery = e.target.value.trim();
+        clearSearchBtn.style.display = searchQuery ? 'block' : 'none';
+        render();
+      });
+    });
+
+    clearSearchBtn.addEventListener('click', () => {
+      searchInput.value = '';
+      searchQuery = '';
+      clearSearchBtn.style.display = 'none';
+      searchInput.focus();
+      render();
+    });
+
+    resetFilterBtn.addEventListener('click', () => {
+      searchInput.value = '';
+      searchQuery = '';
+      clearSearchBtn.style.display = 'none';
+      currentFilter = 'all';
+      filterPills.forEach(p => p.classList.toggle('active', p.dataset.filter === 'all'));
+      render();
+    });
+
+    // Random Pick
+    randomBtn.addEventListener('click', () => {
+      const randomIndex = Math.floor(Math.random() * SIMULATORS.length);
+      openPreview(SIMULATORS[randomIndex].num);
+    });
+
+    // Modal Preview Logic
+    function openPreview(num) {
+      const index = SIMULATORS.findIndex(s => s.num === num);
+      if (index === -1) return;
+      currentModalIndex = index;
+      const sim = SIMULATORS[index];
+
+      modalBadgeNum.textContent = '#' + String(sim.num).padStart(2, '0');
+      modalTitle.textContent = sim.h1 + ' (' + sim.chapterTitle + ')';
+      modalExternalLink.href = 'topics/' + sim.file;
+      modalIframe.src = 'topics/' + sim.file;
+
+      previewModal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      previewModal.classList.remove('active');
+      modalIframe.src = 'about:blank';
+      document.body.style.overflow = '';
+    }
+
+    modalCloseBtn.addEventListener('click', closeModal);
+    previewModal.addEventListener('click', (e) => {
+      if (e.target === previewModal) closeModal();
+    });
+
+    modalPrevBtn.addEventListener('click', () => {
+      currentModalIndex = (currentModalIndex - 1 + SIMULATORS.length) % SIMULATORS.length;
+      openPreview(SIMULATORS[currentModalIndex].num);
+    });
+
+    modalNextBtn.addEventListener('click', () => {
+      currentModalIndex = (currentModalIndex + 1) % SIMULATORS.length;
+      openPreview(SIMULATORS[currentModalIndex].num);
+    });
+
+    // Keyboard Shortcuts
+    window.addEventListener('keydown', (e) => {
+      // Focus search with '/'
+      if (e.key === '/' && document.activeElement !== searchInput && !previewModal.classList.contains('active')) {
+        e.preventDefault();
+        searchInput.focus();
+      }
+      // Close modal with Escape
+      if (e.key === 'Escape') {
+        if (previewModal.classList.contains('active')) {
+          closeModal();
+        } else if (searchInput === document.activeElement) {
+          searchInput.blur();
+        }
+      }
+      // Modal Next/Prev with Arrow Keys
+      if (previewModal.classList.contains('active')) {
+        if (e.key === 'ArrowLeft') modalPrevBtn.click();
+        if (e.key === 'ArrowRight') modalNextBtn.click();
+      }
+    });
+
+    // Initialization
+    initTheme();
+    updateStats();
+    render();
+  </script>
+</body>
+</html>

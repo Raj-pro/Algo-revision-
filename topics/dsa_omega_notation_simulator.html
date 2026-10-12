@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DSA Simulator 03 — Omega Notation</title>
+<style>
+:root{--bg:#f4f7fb;--card:#fff;--ink:#172033;--muted:#64748b;--line:#dbe3ef;--blue:#2563eb;--green:#059669;--orange:#ea580c}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}header{background:linear-gradient(120deg,#14213d,#2457a7);color:#fff;padding:26px 18px}header>div,main{max-width:1080px;margin:auto}main{padding:20px 16px 40px}.eyebrow{text-transform:uppercase;letter-spacing:.12em;font-size:.78rem;opacity:.8;font-weight:700}h1{font-size:clamp(1.6rem,4vw,2.4rem);margin:5px 0}header p{margin:0;color:#e4edff}.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:19px;box-shadow:0 5px 20px #0f172a08}h2{font-size:1.2rem;margin:0 0 10px}h3{font-size:1rem;margin:17px 0 5px}.muted{color:var(--muted)}.formula{display:inline-block;background:#eaf1ff;color:#1d4ed8;padding:8px 12px;border-radius:9px;font-weight:800}.control{display:flex;gap:12px;align-items:center;margin:14px 0}.control input{width:100%;accent-color:var(--blue)}button{border:1px solid #cbd5e1;background:#fff;border-radius:9px;padding:9px 12px;cursor:pointer;font-weight:650;color:var(--ink)}button:hover{background:#eff6ff;border-color:#93c5fd}.primary{background:var(--blue);color:#fff;border-color:var(--blue)}.buttons{display:flex;gap:8px;flex-wrap:wrap}.chart{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:12px;background:#fcfdff}.legend{display:flex;gap:12px;flex-wrap:wrap;font-size:.86rem;margin-top:9px}.legend span{display:flex;align-items:center;gap:6px}.dot{width:10px;height:10px;border-radius:50%}.callout{padding:12px;border-radius:10px;background:#eff6ff;border:1px solid #bfdbfe;margin-top:12px}.good{background:#f0fdf4;border-color:#bbf7d0}.example{background:#f8fafc;border:1px solid var(--line);border-radius:9px;padding:10px;overflow:auto}code{font-family:ui-monospace,Consolas,monospace}.quiz{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.feedback{min-height:26px;font-weight:650;margin-top:10px}@media(max-width:750px){.grid{grid-template-columns:1fr}.card{padding:15px}.quiz{grid-template-columns:1fr}}
+</style></head><body>
+<header><div><div class="eyebrow">DSA • Interactive learning series • 03</div><h1>Omega Notation (Ω)</h1><p>Learn how Ω describes a lower bound on an algorithm's growth, using a simple visual example and an interactive graph.</p></div></header>
+<main>
+<div class="grid">
+<section class="card"><h2>1. What does Ω mean?</h2><p><strong>Omega notation gives an asymptotic lower bound.</strong> It describes a rate of growth that a function is at least as large as, for sufficiently large input sizes.</p><div class="formula">f(n) = Ω(g(n))</div><p>Informally: after some point, <code>f(n)</code> grows at least as fast as a constant multiple of <code>g(n)</code>.</p>
+<h3>Formal definition</h3><div class="example"><code>f(n) = Ω(g(n))</code> if there are constants <code>c &gt; 0</code> and <code>n₀</code> such that<br><code>f(n) ≥ c · g(n)</code> for every <code>n ≥ n₀</code>.</div>
+<div class="callout"><strong>Easy memory trick:</strong> Big O = upper bound; Omega = lower bound; Theta = tight bound (both).</div>
+<h3>Choose an example</h3><div class="buttons"><button class="primary" data-example="linear">f(n) = 3n + 2</button><button data-example="square">f(n) = n² + n</button></div><p id="exampleText">For f(n) = 3n + 2, a valid lower bound is Ω(n).</p>
+</section>
+<section class="card"><h2>2. See the lower bound</h2><p class="muted">The solid line is f(n). The dashed line is a chosen lower-bound function c·g(n). Adjust n to inspect a point on the curves.</p>
+<div class="control"><input id="slider" type="range" min="1" max="20" value="8" aria-label="Input size"><strong>n = <span id="nVal">8</span></strong></div>
+<svg id="chart" class="chart" viewBox="0 0 600 360" role="img" aria-label="Graph of a function and a lower bound"><g id="grid"></g><g id="curves"></g><g id="point"></g></svg>
+<div class="legend"><span><i class="dot" style="background:#2563eb"></i>f(n)</span><span><i class="dot" style="background:#059669"></i>c·g(n), lower bound</span></div>
+<div class="callout good" id="status">At the selected n, compare f(n) with the lower bound.</div>
+</section></div>
+<section class="card" style="margin-top:16px"><h2>3. Step-by-step example</h2><p>Let <code>f(n) = 3n + 2</code>. We want to show that <code>f(n) = Ω(n)</code>.</p>
+<ol><li>Choose <code>g(n) = n</code>.</li><li>Choose a positive constant, for example <code>c = 1</code>.</li><li>Check: <code>3n + 2 ≥ 1 × n</code> for all <code>n ≥ 1</code>.</li><li>So <code>3n + 2 = Ω(n)</code>.</li></ol>
+<p class="muted">A function can have more than one valid lower bound. Ω(n) is a useful bound here; Ω(1) is also technically true, but less informative.</p>
+<h3>Algorithm intuition</h3><p>Suppose an algorithm must inspect every item in an array. It performs at least n inspections, so its running time has a lower bound of Ω(n), under this model.</p>
+<div class="callout"><strong>Important distinction:</strong> Ω is a mathematical lower bound, not automatically the same as “best case.” Best-case complexity describes performance on the easiest inputs; Ω can describe a bound on a function or a specific case, depending on what function is being analyzed.</div>
+</section>
+<section class="card" style="margin-top:16px"><h2>4. Quick check</h2><p>If <code>f(n) = 5n + 10</code>, which is a valid asymptotic lower bound?</p><div class="quiz"><button data-a="no">Ω(n²)</button><button data-a="yes">Ω(n)</button><button data-a="no">Ω(2ⁿ)</button></div><div id="feedback" class="feedback" aria-live="polite"></div></section>
+<p class="muted" style="text-align:center">Next topic in your notebook: Theta notation (Θ).</p>
+</main>
+<script>
+(()=>{
+const slider=document.getElementById('slider'),nVal=document.getElementById('nVal'),grid=document.getElementById('grid'),curves=document.getElementById('curves'),point=document.getElementById('point'),status=document.getElementById('status'),exampleText=document.getElementById('exampleText'),NS='http://www.w3.org/2000/svg';let mode='linear';
+const W=600,H=360,L=50,R=18,T=20,B=38,pw=W-L-R,ph=H-T-B,maxY=70;const X=n=>L+(n-1)/19*pw,Y=v=>T+ph-Math.min(v,maxY)/maxY*ph;
+function add(tag,attrs,parent){let e=document.createElementNS(NS,tag);Object.entries(attrs).forEach(([k,v])=>e.setAttribute(k,v));parent.appendChild(e);return e}
+for(let v=0;v<=70;v+=10){add('line',{x1:L,y1:Y(v),x2:W-R,y2:Y(v),stroke:'#e2e8f0'},grid);let t=add('text',{x:L-8,y:Y(v)+4,'text-anchor':'end','font-size':11,fill:'#64748b'},grid);t.textContent=v}
+for(let n=1;n<=20;n+=3){add('line',{x1:X(n),y1:T,x2:X(n),y2:T+ph,stroke:'#f1f5f9'},grid);let t=add('text',{x:X(n),y:H-14,'text-anchor':'middle','font-size':11,fill:'#64748b'},grid);t.textContent=n}
+function f(n){return mode==='linear'?3*n+2:n*n+n}function lower(n){return mode==='linear'?n:n*n}
+function draw(){curves.innerHTML='';let d1='',d2='';for(let n=1;n<=20;n++){d1+=(n===1?'M':'L')+X(n)+','+Y(f(n))+' ';d2+=(n===1?'M':'L')+X(n)+','+Y(lower(n))+' '}add('path',{d:d1,fill:'none',stroke:'#2563eb','stroke-width':3},curves);add('path',{d:d2,fill:'none',stroke:'#059669','stroke-width':3,'stroke-dasharray':'7 5'},curves);update()}
+function update(){let n=+slider.value;nVal.textContent=n;point.innerHTML='';add('line',{x1:X(n),y1:T,x2:X(n),y2:T+ph,stroke:'#0f172a','stroke-dasharray':'4 5'},point);add('circle',{cx:X(n),cy:Y(f(n)),r:5,fill:'#2563eb',stroke:'white','stroke-width':2},point);add('circle',{cx:X(n),cy:Y(lower(n)),r:5,fill:'#059669',stroke:'white','stroke-width':2},point);status.textContent=`At n = ${n}: f(n) = ${f(n)} and the chosen lower bound is ${lower(n)}. Since f(n) ≥ the lower bound, the Ω relationship holds for this example.`}
+slider.addEventListener('input',update);document.querySelectorAll('[data-example]').forEach(b=>b.onclick=()=>{mode=b.dataset.example;document.querySelectorAll('[data-example]').forEach(x=>x.classList.remove('primary'));b.classList.add('primary');exampleText.textContent=mode==='linear'?'For f(n) = 3n + 2, a valid lower bound is Ω(n).':'For f(n) = n² + n, a valid lower bound is Ω(n²).';draw()});
+document.querySelectorAll('[data-a]').forEach(b=>b.onclick=()=>{let fdb=document.getElementById('feedback');if(b.dataset.a==='yes'){fdb.textContent='Correct! 5n + 10 is at least a positive constant times n for sufficiently large n, so Ω(n) is valid.';fdb.style.color='#047857'}else{fdb.textContent='Not quite. A linear function does not grow as fast as n² or 2ⁿ. Try Ω(n).';fdb.style.color='#b45309'}});draw();
+})();
+</script></body></html>

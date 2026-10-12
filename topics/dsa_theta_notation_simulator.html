@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DSA Simulator 04 — Theta Notation</title>
+<style>
+:root{--bg:#f4f7fb;--card:#fff;--ink:#172033;--muted:#64748b;--line:#dbe3ef;--blue:#2563eb;--green:#059669;--orange:#ea580c}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}header{background:linear-gradient(120deg,#14213d,#2457a7);color:#fff;padding:26px 18px}header>div,main{max-width:1080px;margin:auto}main{padding:20px 16px 40px}.eyebrow{text-transform:uppercase;letter-spacing:.12em;font-size:.78rem;opacity:.8;font-weight:700}h1{font-size:clamp(1.6rem,4vw,2.4rem);margin:5px 0}header p{margin:0;color:#e4edff}.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:19px;box-shadow:0 5px 20px #0f172a08}h2{font-size:1.2rem;margin:0 0 10px}h3{font-size:1rem;margin:17px 0 5px}.muted{color:var(--muted)}.formula{display:inline-block;background:#eaf1ff;color:#1d4ed8;padding:8px 12px;border-radius:9px;font-weight:800}.control{display:flex;gap:12px;align-items:center;margin:14px 0}.control input{width:100%;accent-color:var(--blue)}button{border:1px solid #cbd5e1;background:#fff;border-radius:9px;padding:9px 12px;cursor:pointer;font-weight:650;color:var(--ink)}button:hover{background:#eff6ff;border-color:#93c5fd}.primary{background:var(--blue);color:#fff;border-color:var(--blue)}.buttons{display:flex;gap:8px;flex-wrap:wrap}.chart{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:12px;background:#fcfdff}.legend{display:flex;gap:12px;flex-wrap:wrap;font-size:.86rem;margin-top:9px}.legend span{display:flex;align-items:center;gap:6px}.dot{width:10px;height:10px;border-radius:50%}.callout{padding:12px;border-radius:10px;background:#eff6ff;border:1px solid #bfdbfe;margin-top:12px}.good{background:#f0fdf4;border-color:#bbf7d0}.example{background:#f8fafc;border:1px solid var(--line);border-radius:9px;padding:10px;overflow:auto}.quiz{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.feedback{min-height:26px;font-weight:650;margin-top:10px}@media(max-width:750px){.grid{grid-template-columns:1fr}.card{padding:15px}.quiz{grid-template-columns:1fr}}
+</style></head><body>
+<header><div><div class="eyebrow">DSA • Interactive learning series • 04</div><h1>Theta Notation (Θ)</h1><p>Understand a tight asymptotic bound: when a function is bounded both above and below by the same growth rate.</p></div></header>
+<main>
+<div class="grid">
+<section class="card"><h2>1. What does Θ mean?</h2><p><strong>Theta notation describes a tight asymptotic bound.</strong> It means a function grows at the same order as another function, up to constant factors, for sufficiently large inputs.</p><div class="formula">f(n) = Θ(g(n))</div>
+<h3>Formal definition</h3><div class="example"><code>f(n) = Θ(g(n))</code> when positive constants <code>c₁, c₂</code> and <code>n₀</code> exist such that<br><code>c₁g(n) ≤ f(n) ≤ c₂g(n)</code><br>for all <code>n ≥ n₀</code>.</div>
+<div class="callout"><strong>Memory trick:</strong> O gives an upper bound, Ω gives a lower bound, and Θ gives both at once.</div>
+<h3>Try the examples</h3><div class="buttons"><button class="primary" data-mode="linear">f(n) = 3n + 2</button><button data-mode="square">f(n) = n² + n</button></div><p id="exampleText">For 3n + 2, both bounds can be proportional to n, so the function is Θ(n).</p>
+</section>
+<section class="card"><h2>2. Visualize the two bounds</h2><p class="muted">The blue curve is f(n). Green and orange curves are constant multiples of g(n) that enclose f(n).</p>
+<div class="control"><input id="slider" type="range" min="1" max="20" value="8" aria-label="Input size"><strong>n = <span id="nVal">8</span></strong></div>
+<svg id="chart" class="chart" viewBox="0 0 600 360" role="img" aria-label="Graph showing a function enclosed between upper and lower bounds"><g id="grid"></g><g id="curves"></g><g id="marker"></g></svg>
+<div class="legend"><span><i class="dot" style="background:#059669"></i>Lower bound c₁g(n)</span><span><i class="dot" style="background:#2563eb"></i>f(n)</span><span><i class="dot" style="background:#ea580c"></i>Upper bound c₂g(n)</span></div>
+<div class="callout good" id="status">The function should remain between the two bound curves.</div></section></div>
+<section class="card" style="margin-top:16px"><h2>3. Worked example</h2><p>Let <code>f(n) = 3n + 2</code>. Show that it is <code>Θ(n)</code>.</p>
+<ol><li>Choose <code>g(n) = n</code>.</li><li>For <code>n ≥ 1</code>, we have <code>n ≤ 3n + 2</code>.</li><li>Also, <code>3n + 2 ≤ 5n</code> for <code>n ≥ 1</code>.</li><li>Therefore, <code>1·n ≤ 3n + 2 ≤ 5·n</code>.</li><li>So <code>3n + 2 = Θ(n)</code>.</li></ol>
+<div class="callout"><strong>Example from exams:</strong> <code>4n² + 3n + 8 = Θ(n²)</code>, because the highest-degree term dominates as n becomes large.</div>
+<h3>Algorithm intuition</h3><p>If an algorithm scans every item exactly once, its work is both at most proportional to n and at least proportional to n. In that model, its running time is Θ(n).</p></section>
+<section class="card" style="margin-top:16px"><h2>4. Quick check</h2><p>What is the tight asymptotic bound of <code>6n² + 2n + 9</code>?</p><div class="quiz"><button data-a="no">Θ(n)</button><button data-a="yes">Θ(n²)</button><button data-a="no">Θ(2ⁿ)</button></div><div id="feedback" class="feedback" aria-live="polite"></div></section>
+<p class="muted" style="text-align:center">Next topic in your notebook: Little-o notation (o).</p>
+</main>
+<script>
+(()=>{
+const slider=document.getElementById('slider'),nVal=document.getElementById('nVal'),grid=document.getElementById('grid'),curves=document.getElementById('curves'),marker=document.getElementById('marker'),status=document.getElementById('status'),exampleText=document.getElementById('exampleText'),NS='http://www.w3.org/2000/svg';let mode='linear';
+const W=600,H=360,L=50,R=18,T=20,B=38,pw=W-L-R,ph=H-T-B,maxY=500;const X=n=>L+(n-1)/19*pw,Y=v=>T+ph-Math.min(v,maxY)/maxY*ph;
+function add(tag,attrs,parent){const e=document.createElementNS(NS,tag);Object.entries(attrs).forEach(([k,v])=>e.setAttribute(k,v));parent.appendChild(e);return e}
+for(let v=0;v<=500;v+=100){add('line',{x1:L,y1:Y(v),x2:W-R,y2:Y(v),stroke:'#e2e8f0'},grid);let t=add('text',{x:L-8,y:Y(v)+4,'text-anchor':'end','font-size':11,fill:'#64748b'},grid);t.textContent=v}
+for(let n=1;n<=20;n+=3){add('line',{x1:X(n),y1:T,x2:X(n),y2:T+ph,stroke:'#f1f5f9'},grid);let t=add('text',{x:X(n),y:H-14,'text-anchor':'middle','font-size':11,fill:'#64748b'},grid);t.textContent=n}
+function f(n){return mode==='linear'?3*n+2:n*n+n}function low(n){return mode==='linear'?n:n*n}function high(n){return mode==='linear'?5*n:3*n*n}
+function draw(){curves.innerHTML='';[[low,'#059669','7 5'],[f,'#2563eb',''],[high,'#ea580c','7 5']].forEach(([fn,color,dash])=>{let d='';for(let n=1;n<=20;n++)d+=(n===1?'M':'L')+X(n)+','+Y(fn(n))+' ';add('path',{d,fill:'none',stroke:color,'stroke-width':3,...(dash?{'stroke-dasharray':dash}:{})},curves)});update()}
+function update(){let n=+slider.value;nVal.textContent=n;marker.innerHTML='';add('line',{x1:X(n),y1:T,x2:X(n),y2:T+ph,stroke:'#0f172a','stroke-dasharray':'4 5'},marker);[[f,'#2563eb'],[low,'#059669'],[high,'#ea580c']].forEach(([fn,color])=>add('circle',{cx:X(n),cy:Y(fn(n)),r:5,fill:color,stroke:'white','stroke-width':2},marker));status.textContent=`At n = ${n}: f(n) = ${f(n)}, lower bound = ${low(n)}, upper bound = ${high(n)}. The function is between the bounds.`}
+slider.addEventListener('input',update);document.querySelectorAll('[data-mode]').forEach(b=>b.onclick=()=>{mode=b.dataset.mode;document.querySelectorAll('[data-mode]').forEach(x=>x.classList.remove('primary'));b.classList.add('primary');exampleText.textContent=mode==='linear'?'For 3n + 2, both bounds can be proportional to n, so the function is Θ(n).':'For n² + n, both bounds can be proportional to n², so the function is Θ(n²).';draw()});
+document.querySelectorAll('[data-a]').forEach(b=>b.onclick=()=>{const fdb=document.getElementById('feedback');if(b.dataset.a==='yes'){fdb.textContent='Correct! The n² term dominates, so the tight bound is Θ(n²).';fdb.style.color='#047857'}else{fdb.textContent='Not quite. The highest-degree term is n², so try Θ(n²).';fdb.style.color='#b45309'}});draw();
+})();
+</script></body></html>

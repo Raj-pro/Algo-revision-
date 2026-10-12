@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DSA Simulator 02 — Asymptotic Comparison</title>
+<style>
+:root{--bg:#f4f7fb;--card:#fff;--ink:#172033;--muted:#64748b;--line:#dbe3ef;--blue:#2563eb;--green:#059669;--orange:#ea580c;--purple:#7c3aed}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+header{background:linear-gradient(120deg,#14213d,#2457a7);color:white;padding:26px 18px}header>div,main{max-width:1100px;margin:auto}main{padding:20px 16px 40px}.eyebrow{text-transform:uppercase;letter-spacing:.12em;font-size:.78rem;opacity:.8;font-weight:700}h1{font-size:clamp(1.6rem,4vw,2.4rem);margin:5px 0}header p{margin:0;color:#e4edff;max-width:780px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:19px;box-shadow:0 5px 20px #0f172a08}h2{font-size:1.2rem;margin:0 0 10px}h3{font-size:1rem;margin:17px 0 5px}.muted{color:var(--muted)}.formula{background:#eaf1ff;color:#1d4ed8;padding:9px 12px;border-radius:10px;font-weight:750;display:block;overflow-wrap:anywhere}.control{display:flex;gap:12px;align-items:center;margin:14px 0}.control input{width:100%;accent-color:var(--blue)}button{border:1px solid #cbd5e1;background:white;border-radius:9px;padding:9px 12px;cursor:pointer;font-weight:650;color:var(--ink)}button:hover{background:#eff6ff;border-color:#93c5fd}.primary{background:var(--blue);color:white;border-color:var(--blue)}.buttons{display:flex;gap:8px;flex-wrap:wrap}.value{font-weight:800;white-space:nowrap}.chart{width:100%;height:auto;border:1px solid var(--line);border-radius:12px;background:#fcfdff;display:block}.legend{display:flex;gap:10px;flex-wrap:wrap;font-size:.82rem;margin-top:9px}.legend span{display:flex;align-items:center;gap:5px}.dot{width:10px;height:10px;border-radius:50%}.callout{padding:12px;border-radius:10px;background:#eff6ff;border:1px solid #bfdbfe;margin-top:12px}.good{background:#f0fdf4;border-color:#bbf7d0}.table{width:100%;border-collapse:collapse;margin-top:10px;font-size:.94rem}.table th,.table td{text-align:left;border-bottom:1px solid #e5eaf2;padding:8px}.table th{color:var(--muted);font-size:.85rem}.quiz{display:grid;grid-template-columns:1fr 1fr;gap:8px}.feedback{min-height:25px;font-weight:650;margin-top:10px}.example{background:#f8fafc;border:1px solid var(--line);border-radius:9px;padding:10px;overflow:auto}code{font-family:ui-monospace,Consolas,monospace}@media(max-width:750px){.grid{grid-template-columns:1fr}.card{padding:15px}.quiz{grid-template-columns:1fr}}
+</style></head>
+<body>
+<header><div><div class="eyebrow">DSA • Interactive learning series • 02</div><h1>Asymptotic Comparison</h1><p>Compare how quickly functions grow. Learn why logarithmic growth is slower than linear growth, and why exponential growth becomes huge.</p></div></header>
+<main>
+<div class="grid">
+<section class="card"><h2>1. The growth-rate ladder</h2><p>For large input sizes, a typical order from slower growth to faster growth is:</p><div class="formula">1 &lt; log₂ n &lt; n &lt; n log₂ n &lt; n² &lt; 2ⁿ &lt; n!</div>
+<p class="muted">This compares growth rates, not exact execution time. Constants and implementation details can matter for small inputs.</p>
+<h3>Try a value of n</h3><div class="control"><input id="slider" type="range" min="1" max="16" value="8" aria-label="Input size"><span class="value">n = <span id="n">8</span></span></div>
+<div class="buttons"><button class="primary" id="animate">▶ Animate</button><button id="pause">Ⅱ Pause</button><button id="reset">↺ Reset</button></div>
+<table class="table"><thead><tr><th>Function</th><th>Value at this n</th></tr></thead><tbody id="values"></tbody></table>
+<div class="callout" id="insight">Move the slider to compare the values.</div></section>
+<section class="card"><h2>2. Visual comparison</h2><p class="muted">The graph uses a capped vertical scale so you can still see the slower curves. Very fast-growing functions reach the cap quickly.</p>
+<svg id="chart" class="chart" viewBox="0 0 600 380" role="img" aria-label="Function growth comparison graph"><g id="grid"></g><g id="lines"></g><g id="marker"></g></svg>
+<div class="legend"><span><i class="dot" style="background:#64748b"></i>1</span><span><i class="dot" style="background:#2563eb"></i>log₂ n</span><span><i class="dot" style="background:#059669"></i>n</span><span><i class="dot" style="background:#ea580c"></i>n log₂ n</span><span><i class="dot" style="background:#7c3aed"></i>n²</span><span><i class="dot" style="background:#db2777"></i>2ⁿ</span></div>
+</section></div>
+<section class="card" style="margin-top:16px"><h2>3. Understand each growth rate</h2><div class="grid">
+<div><h3>Constant — O(1)</h3><p>Work stays roughly the same when input grows. Example: reading <code>arr[0]</code>.</p>
+<h3>Logarithmic — O(log n)</h3><p>Each step shrinks the remaining problem, often by half. Example: binary search in a sorted array.</p>
+<h3>Linear — O(n)</h3><p>Work grows in proportion to the input. Example: checking each item once.</p>
+<h3>Linearithmic — O(n log n)</h3><p>Often appears in efficient sorting algorithms such as merge sort.</p></div>
+<div><h3>Quadratic — O(n²)</h3><p>Often appears when two full loops are nested. If n doubles, work grows about four times.</p>
+<h3>Exponential — O(2ⁿ)</h3><p>Work may double whenever one more input item is added. Some brute-force subset problems have this growth.</p>
+<h3>Factorial — O(n!)</h3><p>Can appear when trying every possible ordering, such as a brute-force search through all permutations.</p>
+<div class="callout good"><strong>Exam tip:</strong> For a polynomial such as <code>7n³ + 4n² + 20</code>, the highest-power term dominates, so its growth is <code>O(n³)</code>.</div></div></div></section>
+<section class="card" style="margin-top:16px"><h2>4. Quick check</h2><p>If the input size doubles, which function typically becomes about four times as large?</p><div class="quiz"><button data-a="no">O(n)</button><button data-a="yes">O(n²)</button><button data-a="no">O(log n)</button><button data-a="no">O(1)</button></div><div id="feedback" class="feedback" aria-live="polite"></div></section>
+<p class="muted" style="text-align:center">Next topic in your notebook: Omega notation (Ω).</p>
+</main>
+<script>
+(()=>{
+const slider=document.getElementById('slider'), nEl=document.getElementById('n'), tbody=document.getElementById('values'), insight=document.getElementById('insight'), grid=document.getElementById('grid'), lines=document.getElementById('lines'), marker=document.getElementById('marker'), svgNS='http://www.w3.org/2000/svg';
+const W=600,H=380,L=52,R=15,T=20,B=43,pw=W-L-R,ph=H-T-B,maxY=1000;
+const data=[['1','#64748b',n=>1],['log₂ n','#2563eb',n=>Math.log2(Math.max(n,1))],['n','#059669',n=>n],['n log₂ n','#ea580c',n=>n*Math.log2(Math.max(n,1))],['n²','#7c3aed',n=>n*n],['2ⁿ','#db2777',n=>2**n]];
+const X=n=>L+(n-1)/15*pw,Y=v=>T+ph-Math.min(v,maxY)/maxY*ph;
+function add(tag,attrs,parent){const e=document.createElementNS(svgNS,tag);Object.entries(attrs).forEach(([k,v])=>e.setAttribute(k,v));parent.appendChild(e);return e}
+for(let v=0;v<=1000;v+=200){add('line',{x1:L,y1:Y(v),x2:W-R,y2:Y(v),stroke:'#e2e8f0'},grid);let t=add('text',{x:L-8,y:Y(v)+4,'text-anchor':'end','font-size':11,fill:'#64748b'},grid);t.textContent=v}
+for(let n=1;n<=16;n+=3){add('line',{x1:X(n),y1:T,x2:X(n),y2:T+ph,stroke:'#f1f5f9'},grid);let t=add('text',{x:X(n),y:H-18,'text-anchor':'middle','font-size':11,fill:'#64748b'},grid);t.textContent=n}
+let label=add('text',{x:L+pw/2,y:H-2,'text-anchor':'middle','font-size':12,fill:'#475569'},grid);label.textContent='Input size (n)';
+data.forEach(([name,color,fn])=>{let d='';for(let n=1;n<=16;n++)d+=(n===1?'M':'L')+X(n)+','+Y(fn(n))+' ';add('path',{d,fill:'none',stroke:color,'stroke-width':2.7,'stroke-linecap':'round'},lines)});
+function update(){let n=+slider.value;nEl.textContent=n;tbody.innerHTML='';data.forEach(([name,color,fn])=>{let tr=document.createElement('tr');let val=fn(n);tr.innerHTML=`<td><span style="color:${color};font-weight:800">●</span> ${name}</td><td><strong>${Number(val.toFixed(2)).toLocaleString()}</strong></td>`;tbody.appendChild(tr)});marker.innerHTML='';add('line',{x1:X(n),y1:T,x2:X(n),y2:T+ph,stroke:'#0f172a','stroke-dasharray':'5 5','stroke-width':1.5},marker);data.forEach(([name,color,fn])=>add('circle',{cx:X(n),cy:Y(fn(n)),r:4.5,fill:color,stroke:'white','stroke-width':1.5},marker));if(n<5)insight.textContent=`At n = ${n}, many functions have small values, so their differences may not look dramatic yet.`;else insight.textContent=`At n = ${n}, n² = ${n*n}, while n = ${n}. Exponential growth is already ${2**n} in this simplified comparison.`}
+slider.addEventListener('input',update);update();let timer=null;document.getElementById('animate').onclick=()=>{clearInterval(timer);timer=setInterval(()=>{slider.value=+slider.value>=16?1:+slider.value+1;update()},500)};document.getElementById('pause').onclick=()=>{clearInterval(timer);timer=null};document.getElementById('reset').onclick=()=>{clearInterval(timer);timer=null;slider.value=1;update()};document.querySelectorAll('[data-a]').forEach(b=>b.onclick=()=>{let f=document.getElementById('feedback');if(b.dataset.a==='yes'){f.textContent='Correct! (2n)² = 4n², so quadratic growth becomes about four times as large.';f.style.color='#047857'}else{f.textContent='Not quite. Try O(n²): doubling n squares the multiplier, so work becomes about four times as large.';f.style.color='#b45309'}});
+})();
+</script></body></html>
